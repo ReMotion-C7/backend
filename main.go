@@ -1,5 +1,25 @@
 package main
 
+import (
+	"ReMotion-C7/router"
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+)
+
+
 func main() {
-	// This is a placeholder for the main function.
+
+	app := fiber.New(fiber.Config{})
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "*",
+	}))
+
+	router.SetUp(app)
+
+	log.Fatal(app.Listen(":8080"))
+
 }
