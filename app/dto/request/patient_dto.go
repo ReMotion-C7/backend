@@ -1,7 +1,7 @@
 package request
 
 type AddPatientDto struct {
-	PatientId        string   `json:"patientId"`
+	PatientId        int      `json:"patientId"`
 	Phase            int      `json:"phase"`
 	TherapyStartDate string   `json:"therapyStartDate"`
 	Symptoms         []string `json:"symptoms"`
@@ -13,9 +13,9 @@ type EditPatientDto struct {
 }
 
 type AssignExerciseToPatientDto struct {
-	ExerciseId string `json:"exerciseId"`
-	Set        int    `json:"set"`
-	RepOrTime  int    `json:"repOrTime"`
+	ExerciseId int `json:"exerciseId"`
+	Set        int `json:"set"`
+	RepOrTime  int `json:"repOrTime"`
 }
 
 type EditPatientExerciseDto struct {

@@ -1,7 +1,7 @@
 package response
 
 type PatientDto struct {
-	Id               string `json:"id"`
+	Id               int    `json:"id"`
 	Name             string `json:"name"`
 	Phase            int    `json:"phase"`
 	PhoneNumber      string `json:"phoneNumber"`
@@ -10,7 +10,7 @@ type PatientDto struct {
 }
 
 type PatientDetailDto struct {
-	Id                         string                       `json:"id"`
+	Id                         int                          `json:"id"`
 	Name                       string                       `json:"name"`
 	Phase                      int                          `json:"phase"`
 	PhoneNumber                string                       `json:"phoneNumber"`
@@ -22,7 +22,7 @@ type PatientDetailDto struct {
 }
 
 type SearchPatientDto struct {
-	Id          string `json:"id"`
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	PhoneNumber string `json:"phoneNumber"`
 }

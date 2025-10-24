@@ -1,7 +1,7 @@
 package response
 
 type ExerciseDto struct {
-	Id          string `json:"id"`
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Description string `json:"description"`
@@ -10,7 +10,7 @@ type ExerciseDto struct {
 }
 
 type ExerciseDetailForFisioDto struct {
-	Id          string `json:"id"`
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Description string `json:"description"`
@@ -20,7 +20,7 @@ type ExerciseDetailForFisioDto struct {
 }
 
 type PatientExerciseForFisioDto struct {
-	Id          string `json:"id"`
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Description string `json:"description"`
@@ -31,7 +31,7 @@ type PatientExerciseForFisioDto struct {
 }
 
 type ExerciseForPatientDto struct {
-	Id          string `json:"id"`
+	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Description string `json:"description"`
