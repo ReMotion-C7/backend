@@ -17,18 +17,13 @@ func AddPatient(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	var addPatientDto request.AddPatientDto
-	err = c.BodyParser(&addPatientDto)
+	var dto request.AddPatientDto
+	err = ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	err = utils.GetValidator().Struct(addPatientDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	err = service.AddPatientService(c, addPatientDto, id)
+	err = service.AddPatientService(c, dto, id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -39,28 +34,18 @@ func AddPatient(c *fiber.Ctx) error {
 
 func EditPatient(c *fiber.Ctx) error {
 
-	fisioId, err := utils.ConvertToNum(c, "id")
+	fisioId, patientId, err := utils.ConvertToNum2Var(c, "id", "patient_id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	patientId, err := utils.ConvertToNum(c, "patient_id")
+	var dto request.EditPatientDto
+	err = ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	var editPatientDto request.EditPatientDto
-	err = c.BodyParser(&editPatientDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	err = utils.GetValidator().Struct(editPatientDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	err = service.EditPatientService(c, editPatientDto, fisioId, patientId)
+	err = service.EditPatientService(c, dto, fisioId, patientId)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}

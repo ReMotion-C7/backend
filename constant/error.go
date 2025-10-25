@@ -11,7 +11,7 @@ const (
 	ErrMigrateDatabase         = "unable to migrate database tables."
 	ErrAllInputMustBeFilled    = "all input fields must be filled."
 	ErrInvalidCredentials      = "invalid credentials."
-	ErrEmailAlreadyRegistered  = "email already registered."
+	ErrEmailAlreadyRegistered  = "email already registered"
 	ErrUploadFile              = "error while upload file"
 	ErrExerciseNotFound        = "exercise not found"
 	ErrPatientNotFound         = "patient not found"

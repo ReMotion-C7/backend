@@ -11,19 +11,19 @@ import (
 	"time"
 )
 
-func AddPatient(addPatientDto request.AddPatientDto, id int) error {
+func AddPatient(dto request.AddPatientDto, id int) error {
 
 	database := config.GetDatabase()
 
-	therapyStartDate, err := time.Parse("2006-01-02", addPatientDto.TherapyStartDate)
+	therapyStartDate, err := time.Parse("2006-01-02", dto.TherapyStartDate)
 	if err != nil {
 		return err
 	}
 
 	patient := model.Patient{
-		UserID:           uint(addPatientDto.UserId),
+		UserID:           uint(dto.UserId),
 		TherapyStartDate: therapyStartDate,
-		Phase:            addPatientDto.Phase,
+		Phase:            dto.Phase,
 		FisiotherapyID:   uint(id),
 	}
 
@@ -34,7 +34,7 @@ func AddPatient(addPatientDto request.AddPatientDto, id int) error {
 
 	var symptoms []model.Symptom
 
-	for _, s := range addPatientDto.Symptoms {
+	for _, s := range dto.Symptoms {
 
 		symptoms = append(symptoms, model.Symptom{
 			Name:      s,
@@ -52,7 +52,7 @@ func AddPatient(addPatientDto request.AddPatientDto, id int) error {
 
 }
 
-func EditPatient(editPatientDto request.EditPatientDto, fisioId int, patientId int) error {
+func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
 
 	database := config.GetDatabase()
 
@@ -65,7 +65,7 @@ func EditPatient(editPatientDto request.EditPatientDto, fisioId int, patientId i
 		return fmt.Errorf(constant.ErrPatientNotFound)
 	}
 
-	err = database.Model(&patient).Update("phase", editPatientDto.Phase).Error
+	err = database.Model(&patient).Update("phase", dto.Phase).Error
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func EditPatient(editPatientDto request.EditPatientDto, fisioId int, patientId i
 	}
 
 	var newSymptoms []model.Symptom
-	for _, s := range editPatientDto.Symptoms {
+	for _, s := range dto.Symptoms {
 		newSymptoms = append(newSymptoms, model.Symptom{
 			Name:      s,
 			PatientID: patient.ID,

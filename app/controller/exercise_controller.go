@@ -12,18 +12,13 @@ import (
 
 func CreateExercise(c *fiber.Ctx) error {
 
-	var createExerciseDto request.CreateEditExerciseDto
-	err := c.BodyParser(&createExerciseDto)
+	var dto request.CreateEditExerciseDto
+	err := ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	err = utils.GetValidator().Struct(createExerciseDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	err = service.CreateExerciseService(c, createExerciseDto)
+	err = service.CreateExerciseService(c, dto)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}
@@ -39,18 +34,13 @@ func AssignExercise(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	var assignExerciseToPatientDto request.AssignExerciseToPatientDto
-	err = c.BodyParser(&assignExerciseToPatientDto)
+	var dto request.AssignExerciseToPatientDto
+	err = ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	err = utils.GetValidator().Struct(assignExerciseToPatientDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	err = service.AssignExerciseService(assignExerciseToPatientDto, id)
+	err = service.AssignExerciseService(dto, id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}
@@ -61,23 +51,18 @@ func AssignExercise(c *fiber.Ctx) error {
 
 func EditPatientExercise(c *fiber.Ctx) error {
 
-	patientId, err := utils.ConvertToNum(c, "patient_id")
+	patientId, exerciseId, err := utils.ConvertToNum2Var(c, "patient_id", "exercise_id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	exerciseId, err := utils.ConvertToNum(c, "exercise_id")
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	var editPatientExerciseDto request.EditPatientExerciseDto
-	err = ParseAndValidateBody(c, &editPatientExerciseDto)
+	var dto request.EditPatientExerciseDto
+	err = ParseAndValidateBody(c, &dto)
 	if err != nil {
 		return err
 	}
 
-	err = service.EditPatientExerciseService(editPatientExerciseDto, patientId, exerciseId)
+	err = service.EditPatientExerciseService(dto, patientId, exerciseId)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}
@@ -88,12 +73,7 @@ func EditPatientExercise(c *fiber.Ctx) error {
 
 func DeletePatientExercise(c *fiber.Ctx) error {
 
-	patientId, err := utils.ConvertToNum(c, "patient_id")
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	exerciseId, err := utils.ConvertToNum(c, "exercise_id")
+	patientId, exerciseId, err := utils.ConvertToNum2Var(c, "patient_id", "exercise_id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}

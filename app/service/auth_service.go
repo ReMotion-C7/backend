@@ -11,14 +11,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func LoginService(c *fiber.Ctx, loginDto request.LoginDto) (response.UserDto, error) {
+func LoginService(c *fiber.Ctx, dto request.LoginDto) (response.UserDto, error) {
 
-	user, err := helper.FindUserByIdentifier(loginDto.Identifier)
+	user, err := helper.FindUserByIdentifier(dto.Identifier)
 	if err != nil {
 		return response.UserDto{}, err
 	}
 
-	err = utils.CheckPassword(loginDto.Password, user.Password)
+	err = utils.CheckPassword(dto.Password, user.Password)
 	if err != nil {
 		return response.UserDto{}, err
 	}
@@ -33,14 +33,14 @@ func LoginService(c *fiber.Ctx, loginDto request.LoginDto) (response.UserDto, er
 
 }
 
-func RegisterService(c *fiber.Ctx, registerDto request.RegisterDto) (response.UserDto, error) {
+func RegisterService(c *fiber.Ctx, dto request.RegisterDto) (response.UserDto, error) {
 
-	_, err := helper.FindUserByIdentifier(registerDto.Email)
+	_, err := helper.FindUserByIdentifier(dto.Email)
 	if err == nil {
 		return response.UserDto{}, fmt.Errorf(constant.ErrEmailAlreadyRegistered)
 	}
 
-	user, err := helper.AddUser(registerDto)
+	user, err := helper.AddUser(dto)
 	if err != nil {
 		return response.UserDto{}, err
 	}

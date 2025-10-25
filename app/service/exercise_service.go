@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func CreateExerciseService(c *fiber.Ctx, createExerciseDto request.CreateEditExerciseDto) error {
+func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) error {
 
 	imageUrl, err := utils.UploadFileToStorage(c, "image")
 	if err != nil {
@@ -22,7 +22,7 @@ func CreateExerciseService(c *fiber.Ctx, createExerciseDto request.CreateEditExe
 		return err
 	}
 
-	err = helper.AddExercise(createExerciseDto, imageUrl, videoUrl)
+	err = helper.AddExercise(dto, imageUrl, videoUrl)
 	if err != nil {
 		return err
 	}
@@ -31,9 +31,9 @@ func CreateExerciseService(c *fiber.Ctx, createExerciseDto request.CreateEditExe
 
 }
 
-func AssignExerciseService(assignExerciseDto request.AssignExerciseToPatientDto, patientId int) error {
+func AssignExerciseService(dto request.AssignExerciseToPatientDto, patientId int) error {
 
-	err := helper.AddExerciseToPatient(assignExerciseDto, patientId)
+	err := helper.AddExerciseToPatient(dto, patientId)
 	if err != nil {
 		return err
 	}
@@ -42,9 +42,9 @@ func AssignExerciseService(assignExerciseDto request.AssignExerciseToPatientDto,
 
 }
 
-func EditPatientExerciseService(editPatientExerciseDto request.EditPatientExerciseDto, patientId int, exerciseId int) error {
+func EditPatientExerciseService(dto request.EditPatientExerciseDto, patientId int, exerciseId int) error {
 
-	err := helper.EditPatientExercise(editPatientExerciseDto, patientId, exerciseId)
+	err := helper.EditPatientExercise(dto, patientId, exerciseId)
 	if err != nil {
 		return err
 	}

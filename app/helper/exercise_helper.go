@@ -12,15 +12,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func AddExercise(createExerciseDto request.CreateEditExerciseDto, imageUrl string, videoUrl string) error {
+func AddExercise(dto request.CreateEditExerciseDto, imageUrl string, videoUrl string) error {
 
 	database := config.GetDatabase()
 
 	exercise := model.Exercise{
-		Name:        createExerciseDto.Name,
-		TypeID:      uint(createExerciseDto.TypeId),
-		Description: createExerciseDto.Description,
-		Muscle:      createExerciseDto.Muscle,
+		Name:        dto.Name,
+		TypeID:      uint(dto.TypeId),
+		Description: dto.Description,
+		Muscle:      dto.Muscle,
 		Image:       imageUrl,
 		Video:       videoUrl,
 	}
@@ -34,15 +34,15 @@ func AddExercise(createExerciseDto request.CreateEditExerciseDto, imageUrl strin
 
 }
 
-func AddExerciseToPatient(assignExerciseDto request.AssignExerciseToPatientDto, patientId int) error {
+func AddExerciseToPatient(dto request.AssignExerciseToPatientDto, patientId int) error {
 
 	database := config.GetDatabase()
 
 	patientExercise := model.PatientExercise{
 		PatientID:  uint(patientId),
-		ExerciseID: uint(assignExerciseDto.ExerciseId),
-		Set:        assignExerciseDto.Set,
-		RepOrTime:  assignExerciseDto.RepOrTime,
+		ExerciseID: uint(dto.ExerciseId),
+		Set:        dto.Set,
+		RepOrTime:  dto.RepOrTime,
 	}
 
 	err := database.Create(&patientExercise).Error
@@ -99,7 +99,7 @@ func DeletePatientExercise(patientId int, exerciseId int) error {
 	}
 
 	return nil
-	
+
 }
 
 func RetrieveExercises() ([]response.ExerciseDto, error) {

@@ -13,18 +13,13 @@ import (
 
 func Login(c *fiber.Ctx) error {
 
-	var loginDto request.LoginDto
-	err := c.BodyParser(&loginDto)
+	var dto request.LoginDto
+	err := ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	err = utils.GetValidator().Struct(loginDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	user, err := service.LoginService(c, loginDto)
+	user, err := service.LoginService(c, dto)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, constant.ErrInvalidCredentials, nil)
 	}
@@ -45,18 +40,13 @@ func Login(c *fiber.Ctx) error {
 
 func Register(c *fiber.Ctx) error {
 
-	var registerDto request.RegisterDto
-	err := c.BodyParser(&registerDto)
+	var dto request.RegisterDto
+	err := ParseAndValidateBody(c, &dto)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return err
 	}
 
-	err = utils.GetValidator().Struct(registerDto)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
-	}
-
-	user, err := service.RegisterService(c, registerDto)
+	user, err := service.RegisterService(c, dto)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}

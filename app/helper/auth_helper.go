@@ -22,28 +22,28 @@ func FindUserByIdentifier(value string) (model.User, error) {
 
 }
 
-func AddUser(registerDto request.RegisterDto) (model.User, error) {
+func AddUser(dto request.RegisterDto) (model.User, error) {
 
 	database := config.GetDatabase()
 
-	hashPassword, err := utils.HashPassword(registerDto.Password)
+	hashPassword, err := utils.HashPassword(dto.Password)
 	if err != nil {
 		return model.User{}, err
 	}
 
-	dob, err := time.Parse("2006-01-02", registerDto.DateOfBirth)
+	dob, err := time.Parse("2006-01-02", dto.DateOfBirth)
 	if err != nil {
 		return model.User{}, err
 	}
 
 	user := model.User{
-		Name:        registerDto.Name,
-		Email:       registerDto.Email,
-		PhoneNumber: registerDto.PhoneNumber,
+		Name:        dto.Name,
+		Email:       dto.Email,
+		PhoneNumber: dto.PhoneNumber,
 		Password:    hashPassword,
 		DateOfBirth: dob,
 		RoleID:      2,
-		GenderID:    uint(registerDto.GenderId),
+		GenderID:    uint(dto.GenderId),
 	}
 
 	err = database.Create(&user).Error
