@@ -146,11 +146,10 @@ func SeedSymptoms(db *gorm.DB) {
 		"Sulit berjalan normal",
 		"Rasa tidak stabil pada lutut",
 	}
-	patientsIDs := []uint{6, 7, 8, 9, 10}
 
 	symptoms := []model.Symptom{}
 
-	for _, patientID := range patientsIDs {
+	for _, patient := range patients {
 
 		symptomTotal := rand.IntN(3) + 1
 
@@ -160,7 +159,7 @@ func SeedSymptoms(db *gorm.DB) {
 
 			symptom := model.Symptom{
 				Name:      symptomName,
-				PatientID: patientID,
+				PatientID: patient.ID,
 			}
 
 			symptoms = append(symptoms, symptom)

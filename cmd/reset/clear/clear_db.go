@@ -1,4 +1,4 @@
-package reset
+package clear
 
 import (
 	"ReMotion-C7/app/model"

@@ -1,4 +1,4 @@
-PHONY: compile run
+PHONY: compile run migrate reset restart-migrate
 
 -include .env
 
@@ -9,7 +9,10 @@ run:
 	go run main.go
 
 migrate:
-	go run cmd/seeder/main.go
+	cd cmd/seeder && go run main.go
 
 reset:
-	go run cmd/reset/main.go
+	cd cmd/reset && go run main.go
+
+restart-migrate:
+	cd cmd/reset && go run main.go && cd ../seeder && go run main.go

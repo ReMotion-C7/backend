@@ -138,13 +138,13 @@ func SeedPatientExercises(db *gorm.DB) {
 
 		for _ = range make([]struct{}, exerciseTotal) {
 
-			exerciseId := rand.IntN(len(exercises))
+			exerciseId := rand.IntN(len(exercises)) + 1
 
 			patientExercise := model.PatientExercise{
 				Set:        (rand.IntN(3) + 1),
 				RepOrTime:  (rand.IntN(3) + 1) * 10,
 				PatientID:  patient.ID,
-				ExerciseID: uint(exerciseId),
+				ExerciseID: uint(exerciseId ),
 			}
 
 			patientExercises = append(patientExercises, patientExercise)

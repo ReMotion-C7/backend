@@ -10,4 +10,5 @@ const (
 	ErrSeedingDatabase       = "Error: unable to seed database."
 	ErrFetchDataWhileSeeding = "Error: unable to fetch data while seeding."
 	ErrResetTable            = "Error: unable to reset database tables."
+	ErrMigrateDatabase       = "Error: unable to migrate database tables."
 )

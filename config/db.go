@@ -2,7 +2,6 @@ package config
 
 import (
 	"ReMotion-C7/constant"
-	"fmt"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -19,9 +18,9 @@ func ConnectDatabase() {
 		DSN:                  dbUrl,
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{})
-	
+
 	if err != nil {
-		log.Fatalf(constant.ErrConnectingDatabase)
+		log.Fatalln(constant.ErrConnectingDatabase)
 	}
 
 	database = db
@@ -37,10 +36,10 @@ func CheckConnection() {
 
 	err = sqlDb.Ping()
 	if err != nil {
-		log.Fatalf(constant.ErrPingDatabase)
+		log.Fatalln(constant.ErrPingDatabase)
 	}
 
-	fmt.Println(constant.SuccessConnectDatabase)
+	log.Println(constant.SuccessConnectDatabase)
 
 }
 
