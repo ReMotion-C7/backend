@@ -118,6 +118,7 @@ func SeedPatients(db *gorm.DB) {
 			Phase:            (rand.IntN(2) + 1),
 			TherapyStartDate: date,
 			UserID:           uint(i + 6),
+			FisiotherapyID:   uint(i + 1),
 		}
 
 		patients = append(patients, patient)

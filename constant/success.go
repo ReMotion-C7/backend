@@ -11,4 +11,6 @@ var (
 	SuccessCreateExercise      = "successfully create new exercise."
 	SuccessFetchExercises      = "successfully fetch all exercise."
 	SuccessFetchExerciseDetail = "successfully fetch exercise detail."
+	SuccessFetchPatients       = "successfully fetch all patient."
+	SuccessFetchPatientDetail  = "successfully fetch patient detail."
 )

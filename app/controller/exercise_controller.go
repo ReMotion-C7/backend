@@ -7,7 +7,6 @@ import (
 	"ReMotion-C7/output"
 	"ReMotion-C7/utils"
 	"fmt"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,7 +48,7 @@ func GetExercises(c *fiber.Ctx) error {
 func GetExerciseDetail(c *fiber.Ctx) error {
 
 	idStr := c.Params("id")
-	id, err := strconv.Atoi(idStr)
+	id, err := utils.ConvertToNum(idStr)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}

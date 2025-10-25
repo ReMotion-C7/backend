@@ -17,7 +17,7 @@ type PatientDetailDto struct {
 	DateOfBirth                string                       `json:"dateOfBirth"`
 	Gender                     string                       `json:"gender"`
 	TherapyStartDate           string                       `json:"therapyStartDate"`
-	Symptoms                   string                       `json:"symptoms"`
+	Symptoms                   []string                     `json:"symptoms"`
 	PatientExerciseForFisioDto []PatientExerciseForFisioDto `json:"exercises"`
 }
 
