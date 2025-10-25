@@ -2,6 +2,7 @@ package service
 
 import (
 	"ReMotion-C7/app/dto/request"
+	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/helper"
 	"ReMotion-C7/utils"
 
@@ -26,4 +27,26 @@ func CreateExerciseService(c *fiber.Ctx, createExerciseDto request.CreateEditExe
 
 	return nil
 
+}
+
+func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
+
+	exercises, err := helper.RetrieveExercises()
+	if err != nil {
+		return []response.ExerciseDto{}, err
+	}
+
+	return exercises, nil
+
+}
+
+func GetExerciseDetail(c *fiber.Ctx, id int) (response.ExerciseDetailForFisioDto, error) {
+
+	exercise, err := helper.FindExercise(id)
+	if err != nil {
+		return response.ExerciseDetailForFisioDto{}, err
+	}
+
+	return exercise, nil 
+	
 }

@@ -7,6 +7,7 @@ import (
 	"ReMotion-C7/output"
 	"ReMotion-C7/utils"
 	"fmt"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -31,5 +32,34 @@ func CreateExercise(c *fiber.Ctx) error {
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessCreateExercise, nil)
+
+}
+
+func GetExercises(c *fiber.Ctx) error {
+
+	exercises, err := service.GetExercisesService(c)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, exercises)
+
+}
+
+func GetExerciseDetail(c *fiber.Ctx) error {
+
+	idStr := c.Params("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
+	}
+
+	exercise, err := service.GetExerciseDetail(c, id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExerciseDetail, exercise)
 
 }
