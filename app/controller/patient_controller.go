@@ -77,12 +77,7 @@ func GetPatients(c *fiber.Ctx) error {
 
 func GetPatientDetail(c *fiber.Ctx) error {
 
-	fisioId, err := utils.ConvertToNum(c, "id")
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	patientId, err := utils.ConvertToNum(c, "patient_id")
+	fisioId, patientId, err := utils.ConvertToNum2Var(c, "id", "patient_id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
