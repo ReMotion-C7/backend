@@ -13,4 +13,6 @@ const (
 	ErrInvalidCredentials     = "invalid credentials."
 	ErrEmailAlreadyRegistered = "email already registered."
 	ErrUploadFile             = "error while upload file"
+	ErrExerciseNotFound       = "exercise not found"
+	ErrPatientNotFound        = "patient not found"
 )

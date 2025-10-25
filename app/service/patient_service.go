@@ -3,6 +3,8 @@ package service
 import (
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/helper"
+	"ReMotion-C7/constant"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -25,6 +27,25 @@ func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.Patien
 		return response.PatientDetailDto{}, err
 	}
 
+	if patient.Id == 0 {
+		return response.PatientDetailDto{}, fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
 	return patient, nil
+
+}
+
+func SearchPatientService(c *fiber.Ctx, patientName string) ([]response.SearchPatientDto, error) {
+
+	patients, err := helper.FindPatientsByName(patientName)
+	if err != nil {
+		return []response.SearchPatientDto{}, err
+	}
+
+	if len(patients) == 0 {
+		return []response.SearchPatientDto{}, fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
+	return patients, nil
 
 }

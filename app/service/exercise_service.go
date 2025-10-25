@@ -4,7 +4,9 @@ import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/helper"
+	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -47,6 +49,10 @@ func GetExerciseDetail(c *fiber.Ctx, id int) (response.ExerciseDetailForFisioDto
 		return response.ExerciseDetailForFisioDto{}, err
 	}
 
-	return exercise, nil 
-	
+	if exercise.Id == 0 {
+		return response.ExerciseDetailForFisioDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+	}
+
+	return exercise, nil
+
 }

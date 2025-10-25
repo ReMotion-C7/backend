@@ -4,6 +4,7 @@ import (
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
+	"strings"
 )
 
 func RetrievePatients() ([]response.PatientDto, error) {
@@ -11,7 +12,7 @@ func RetrievePatients() ([]response.PatientDto, error) {
 	database := config.GetDatabase()
 	var patients []model.Patient
 
-	err := database.Preload("User").Find(&patients).Error
+	err := database.Preload("PatientUser").Find(&patients).Error
 	if err != nil {
 		return []response.PatientDto{}, err
 	}
@@ -30,6 +31,34 @@ func RetrievePatients() ([]response.PatientDto, error) {
 	}
 
 	return patientsDto, nil
+
+}
+
+func FindPatientsByName(patientName string) ([]response.SearchPatientDto, error) {
+
+	database := config.GetDatabase()
+	var patients []model.Patient
+
+	patientName = strings.TrimSpace(patientName)
+
+	err := database.Preload("PatientUser").
+		Joins("JOIN users u ON u.id = patients.user_id").
+		Where("u.name ILIKE ?", "%"+patientName+"%").
+		Find(&patients).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var searchPatientsDto []response.SearchPatientDto
+	for _, p := range patients {
+		searchPatientsDto = append(searchPatientsDto, response.SearchPatientDto{
+			Id:          int(p.ID),
+			Name:        p.PatientUser.Name,
+			PhoneNumber: p.PatientUser.PhoneNumber,
+		})
+	}
+
+	return searchPatientsDto, nil
 
 }
 

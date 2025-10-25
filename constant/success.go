@@ -13,4 +13,5 @@ var (
 	SuccessFetchExerciseDetail = "successfully fetch exercise detail."
 	SuccessFetchPatients       = "successfully fetch all patient."
 	SuccessFetchPatientDetail  = "successfully fetch patient detail."
+	SuccessSearchPatients      = "successfully find specific patient."
 )
