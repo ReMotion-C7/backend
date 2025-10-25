@@ -37,6 +37,7 @@ func AddUser(registerDto request.RegisterDto) (model.User, error) {
 	}
 
 	user := model.User{
+		Name:        registerDto.Name,
 		Email:       registerDto.Email,
 		PhoneNumber: registerDto.PhoneNumber,
 		Password:    hashPassword,
@@ -45,7 +46,7 @@ func AddUser(registerDto request.RegisterDto) (model.User, error) {
 		GenderID:    uint(registerDto.GenderId),
 	}
 
-	err = database.Create(user).Error
+	err = database.Create(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}

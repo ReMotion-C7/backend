@@ -9,4 +9,5 @@ var (
 	SuccessLoadEnvFile     Success = "successfully loaded .env file."
 	SuccessResetTable      Success = "database tables reset successfully."
 	SuccessLogin           Success = "successfully login!"
+	SuccessRegister        Success = "successfully register!"
 )

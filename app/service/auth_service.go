@@ -1,10 +1,12 @@
 package service
 
 import (
-	"ReMotion-C7/app/controller/helper"
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
+	"ReMotion-C7/app/helper"
+	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -32,6 +34,11 @@ func LoginService(c *fiber.Ctx, loginDto request.LoginDto) (response.UserDto, er
 }
 
 func RegisterService(c *fiber.Ctx, registerDto request.RegisterDto) (response.UserDto, error) {
+
+	_, err := helper.FindUserByIdentifier(registerDto.Email)
+	if err == nil {
+		return response.UserDto{}, fmt.Errorf(constant.ErrEmailAlreadyRegistered)
+	}
 
 	user, err := helper.AddUser(registerDto)
 	if err != nil {
