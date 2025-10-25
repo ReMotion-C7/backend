@@ -6,7 +6,10 @@ import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
 	"ReMotion-C7/constant"
+	"errors"
 	"fmt"
+
+	"gorm.io/gorm"
 )
 
 func AddExercise(createExerciseDto request.CreateEditExerciseDto, imageUrl string, videoUrl string) error {
@@ -74,6 +77,29 @@ func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exer
 
 	return nil
 
+}
+
+func DeletePatientExercise(patientId int, exerciseId int) error {
+
+	database := config.GetDatabase()
+
+	var patientExercise model.PatientExercise
+	err := database.Where("patient_id = ? AND exercise_id = ?", patientId, exerciseId).
+		First(&patientExercise).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf(constant.ErrPatientExerciseNotFound)
+		}
+		return err
+	}
+
+	err = database.Delete(&patientExercise).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+	
 }
 
 func RetrieveExercises() ([]response.ExerciseDto, error) {

@@ -86,6 +86,26 @@ func EditPatientExercise(c *fiber.Ctx) error {
 
 }
 
+func DeletePatientExercise(c *fiber.Ctx) error {
+
+	patientId, err := utils.ConvertToNum(c, "patient_id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	exerciseId, err := utils.ConvertToNum(c, "exercise_id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	err = service.DeletePatientExerciseService(patientId, exerciseId)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessDeletePatientExercise, nil)
+}
+
 func GetExercises(c *fiber.Ctx) error {
 
 	exercises, err := service.GetExercisesService(c)

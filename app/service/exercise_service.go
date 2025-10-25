@@ -53,6 +53,16 @@ func EditPatientExerciseService(editPatientExerciseDto request.EditPatientExerci
 
 }
 
+func DeletePatientExerciseService(patientId int, exerciseId int) error {
+
+	err := helper.DeletePatientExercise(patientId, exerciseId)
+	if err != nil {
+		return err
+	}
+	
+	return nil
+}
+
 func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
 
 	exercises, err := helper.RetrieveExercises()
