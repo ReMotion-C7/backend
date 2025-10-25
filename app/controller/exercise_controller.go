@@ -55,7 +55,7 @@ func GetExerciseDetail(c *fiber.Ctx) error {
 
 	exercise, err := service.GetExerciseDetail(c, id)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 
 	}
 

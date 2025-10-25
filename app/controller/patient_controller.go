@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/service"
 	"ReMotion-C7/constant"
 	"ReMotion-C7/output"
@@ -8,6 +9,34 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 )
+
+func AddPatient(c *fiber.Ctx) error {
+
+	idStr := c.Params("id")
+	id, err := utils.ConvertToNum(idStr)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	var addPatientDto request.AddPatientDto
+	err = c.BodyParser(&addPatientDto)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	err = utils.GetValidator().Struct(addPatientDto)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
+	}
+
+	err = service.AddPatientService(c, addPatientDto, id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessAddPatient, nil)
+
+}
 
 func GetPatients(c *fiber.Ctx) error {
 
@@ -23,7 +52,7 @@ func GetPatients(c *fiber.Ctx) error {
 
 	patients, err := service.SearchPatientService(c, patientName)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessSearchPatients, patients)
@@ -46,7 +75,7 @@ func GetPatientDetail(c *fiber.Ctx) error {
 
 	patient, err := service.GetPatientDetail(c, fisioId, patientId)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatientDetail, patient)

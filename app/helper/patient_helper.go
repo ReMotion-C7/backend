@@ -1,11 +1,54 @@
 package helper
 
 import (
+	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
 	"strings"
+	"time"
 )
+
+func AddPatient(addPatientDto request.AddPatientDto, id int) error {
+
+	database := config.GetDatabase()
+
+	therapyStartDate, err := time.Parse("2006-01-02", addPatientDto.TherapyStartDate)
+	if err != nil {
+		return err
+	}
+
+	patient := model.Patient{
+		UserID:           uint(addPatientDto.UserId),
+		TherapyStartDate: therapyStartDate,
+		Phase:            addPatientDto.Phase,
+		FisiotherapyID:   uint(id),
+	}
+
+	err = database.Create(&patient).Error
+	if err != nil {
+		return err
+	}
+
+	var symptoms []model.Symptom
+
+	for _, s := range addPatientDto.Symptoms {
+
+		symptoms = append(symptoms, model.Symptom{
+			Name:      s,
+			PatientID: patient.ID,
+		})
+
+	}
+
+	err = database.Create(&symptoms).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
 
 func RetrievePatients() ([]response.PatientDto, error) {
 

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/helper"
 	"ReMotion-C7/constant"
@@ -8,6 +9,17 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 )
+
+func AddPatientService(c *fiber.Ctx, addPatientDto request.AddPatientDto, id int) (error) {
+
+	err := helper.AddPatient(addPatientDto, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
 
 func GetPatientsService(c *fiber.Ctx) ([]response.PatientDto, error) {
 
