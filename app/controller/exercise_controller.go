@@ -47,8 +47,7 @@ func GetExercises(c *fiber.Ctx) error {
 
 func GetExerciseDetail(c *fiber.Ctx) error {
 
-	idStr := c.Params("id")
-	id, err := utils.ConvertToNum(idStr)
+	id, err := utils.ConvertToNum(c, "id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}

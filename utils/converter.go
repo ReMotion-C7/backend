@@ -2,14 +2,19 @@ package utils
 
 import (
 	"strconv"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func ConvertToNum(idStr string) (int, error) {
+func ConvertToNum(c *fiber.Ctx, idStr string) (int, error) {
 
-	id, err := strconv.Atoi(idStr)
+	id := c.Params(idStr)
+
+	idNum, err := strconv.Atoi(id)
 	if err != nil {
 		return 0, err
 	}
 
-	return id, nil
+	return idNum, nil
+	
 }

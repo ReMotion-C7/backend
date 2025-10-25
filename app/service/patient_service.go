@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func AddPatientService(c *fiber.Ctx, addPatientDto request.AddPatientDto, id int) (error) {
+func AddPatientService(c *fiber.Ctx, addPatientDto request.AddPatientDto, id int) error {
 
 	err := helper.AddPatient(addPatientDto, id)
 	if err != nil {
@@ -19,6 +19,17 @@ func AddPatientService(c *fiber.Ctx, addPatientDto request.AddPatientDto, id int
 
 	return nil
 
+}
+
+func EditPatientService(c *fiber.Ctx, editPatientDto request.EditPatientDto, fisioId int, patientId int) error {
+
+	err := helper.EditPatient(editPatientDto, fisioId, patientId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+	
 }
 
 func GetPatientsService(c *fiber.Ctx) ([]response.PatientDto, error) {

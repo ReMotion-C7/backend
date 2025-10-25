@@ -12,8 +12,7 @@ import (
 
 func AddPatient(c *fiber.Ctx) error {
 
-	idStr := c.Params("id")
-	id, err := utils.ConvertToNum(idStr)
+	id, err := utils.ConvertToNum(c, "id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -35,6 +34,38 @@ func AddPatient(c *fiber.Ctx) error {
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessAddPatient, nil)
+
+}
+
+func EditPatient(c *fiber.Ctx) error {
+
+	fisioId, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	patientId, err := utils.ConvertToNum(c, "patient_id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	var editPatientDto request.EditPatientDto
+	err = c.BodyParser(&editPatientDto)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	err = utils.GetValidator().Struct(editPatientDto)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, constant.ErrAllInputMustBeFilled, nil)
+	}
+
+	err = service.EditPatientService(c, editPatientDto, fisioId, patientId)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessEditPatient, nil)
 
 }
 
@@ -61,14 +92,12 @@ func GetPatients(c *fiber.Ctx) error {
 
 func GetPatientDetail(c *fiber.Ctx) error {
 
-	fisioIdStr := c.Params("id")
-	fisioId, err := utils.ConvertToNum(fisioIdStr)
+	fisioId, err := utils.ConvertToNum(c, "id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	patientIdStr := c.Params("patient_id")
-	patientId, err := utils.ConvertToNum(patientIdStr)
+	patientId, err := utils.ConvertToNum(c, "patient_id")
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
