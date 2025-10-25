@@ -5,6 +5,8 @@ import (
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
+	"ReMotion-C7/constant"
+	"fmt"
 	"strings"
 	"time"
 )
@@ -48,6 +50,44 @@ func AddPatient(addPatientDto request.AddPatientDto, id int) error {
 
 	return nil
 
+}
+
+func EditPatient(editPatientDto request.EditPatientDto, fisioId int, patientId int) error {
+
+	database := config.GetDatabase()
+
+	var patient model.Patient
+
+	err := database.
+		Where(`id = ? AND fisiotherapy_id = ?`, patientId, fisioId).
+		First(&patient).Error
+	if err != nil {
+		return fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
+	err = database.Model(&patient).Update("phase", editPatientDto.Phase).Error
+	if err != nil {
+		return err
+	}
+
+	err = database.Where(`patient_id = ?`, patientId).Delete(&model.Symptom{}).Error
+	if err != nil {
+		return fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
+	var newSymptoms []model.Symptom
+	for _, s := range editPatientDto.Symptoms {
+		newSymptoms = append(newSymptoms, model.Symptom{
+			Name:      s,
+			PatientID: patient.ID,
+		})
+	}
+
+	if err := database.Create(&newSymptoms).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func RetrievePatients() ([]response.PatientDto, error) {
@@ -129,7 +169,7 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 	var patientExercises []response.PatientExerciseForFisioDto
 	for _, e := range patient.PatientExercises {
 		patientExercises = append(patientExercises, response.PatientExerciseForFisioDto{
-			Id:          int(e.ID),
+			Id:          int(e.ExerciseID),
 			Name:        e.Exercise.Name,
 			Type:        e.Exercise.Type.Name,
 			Image:       e.Exercise.Image,

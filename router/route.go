@@ -28,4 +28,8 @@ func SetUp(app *fiber.App) {
 	patientOnFisio.Get("/", controller.GetPatients)
 	patientOnFisio.Get("/:patient_id", controller.GetPatientDetail)
 
+	// PATIENT'S EXERCISE ON FISIO ENPOINTS
+	patientsExerciseOnFisio := api.Group("/fisio/:id/patients/:patient_id/exercises")
+	patientsExerciseOnFisio.Post("/assign", controller.AssignExercise)
+
 }
