@@ -17,4 +17,5 @@ var (
 	SuccessAddPatient          = "successfully add new patient"
 	SuccessEditPatient         = "successfully edit patient detail"
 	SuccessAssignExercise      = "successfully assign new exercises to patient."
+	SuccessEditPatientExercise = "successfully edit patient's exercise."
 )

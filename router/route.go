@@ -31,5 +31,6 @@ func SetUp(app *fiber.App) {
 	// PATIENT'S EXERCISE ON FISIO ENPOINTS
 	patientsExerciseOnFisio := api.Group("/fisio/:id/patients/:patient_id/exercises")
 	patientsExerciseOnFisio.Post("/assign", controller.AssignExercise)
+	patientsExerciseOnFisio.Patch("/edit/:exercise_id", controller.EditPatientExercise)
 
 }

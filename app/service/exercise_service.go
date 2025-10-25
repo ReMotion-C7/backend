@@ -42,6 +42,17 @@ func AssignExerciseService(assignExerciseDto request.AssignExerciseToPatientDto,
 
 }
 
+func EditPatientExerciseService(editPatientExerciseDto request.EditPatientExerciseDto, patientId int, exerciseId int) error {
+
+	err := helper.EditPatientExercise(editPatientExerciseDto, patientId, exerciseId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
 func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
 
 	exercises, err := helper.RetrieveExercises()
