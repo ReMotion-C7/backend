@@ -3,7 +3,7 @@ package service
 import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
-	"ReMotion-C7/app/helper"
+	"ReMotion-C7/app/repository"
 	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
 	"fmt"
@@ -22,50 +22,18 @@ func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) erro
 		return err
 	}
 
-	err = helper.AddExercise(dto, imageUrl, videoUrl)
+	err = repository.AddExercise(dto, imageUrl, videoUrl)
 	if err != nil {
 		return err
 	}
 
 	return nil
 
-}
-
-func AssignExerciseService(dto request.AssignExerciseToPatientDto, patientId int) error {
-
-	err := helper.AddExerciseToPatient(dto, patientId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
-}
-
-func EditPatientExerciseService(dto request.EditPatientExerciseDto, patientId int, exerciseId int) error {
-
-	err := helper.EditPatientExercise(dto, patientId, exerciseId)
-	if err != nil {
-		return err
-	}
-
-	return nil
-
-}
-
-func DeletePatientExerciseService(patientId int, exerciseId int) error {
-
-	err := helper.DeletePatientExercise(patientId, exerciseId)
-	if err != nil {
-		return err
-	}
-	
-	return nil
 }
 
 func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
 
-	exercises, err := helper.RetrieveExercises()
+	exercises, err := repository.RetrieveExercises()
 	if err != nil {
 		return []response.ExerciseDto{}, err
 	}
@@ -76,7 +44,7 @@ func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
 
 func GetExerciseDetail(c *fiber.Ctx, id int) (response.ExerciseDetailForFisioDto, error) {
 
-	exercise, err := helper.FindExercise(id)
+	exercise, err := repository.FindExercise(id)
 	if err != nil {
 		return response.ExerciseDetailForFisioDto{}, err
 	}

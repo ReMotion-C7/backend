@@ -3,7 +3,7 @@ package service
 import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
-	"ReMotion-C7/app/helper"
+	"ReMotion-C7/app/repository"
 	"ReMotion-C7/constant"
 	"fmt"
 
@@ -12,7 +12,7 @@ import (
 
 func AddPatientService(c *fiber.Ctx, dto request.AddPatientDto, id int) error {
 
-	err := helper.AddPatient(dto, id)
+	err := repository.AddPatient(dto, id)
 	if err != nil {
 		return err
 	}
@@ -23,7 +23,7 @@ func AddPatientService(c *fiber.Ctx, dto request.AddPatientDto, id int) error {
 
 func EditPatientService(c *fiber.Ctx, dto request.EditPatientDto, fisioId int, patientId int) error {
 
-	err := helper.EditPatient(dto, fisioId, patientId)
+	err := repository.EditPatient(dto, fisioId, patientId)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func EditPatientService(c *fiber.Ctx, dto request.EditPatientDto, fisioId int, p
 
 func GetPatientsService(c *fiber.Ctx) ([]response.PatientDto, error) {
 
-	patients, err := helper.RetrievePatients()
+	patients, err := repository.RetrievePatients()
 	if err != nil {
 		return []response.PatientDto{}, err
 	}
@@ -45,7 +45,7 @@ func GetPatientsService(c *fiber.Ctx) ([]response.PatientDto, error) {
 
 func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.PatientDetailDto, error) {
 
-	patient, err := helper.FindPatientDetail(fisioId, patientId)
+	patient, err := repository.FindPatientDetail(fisioId, patientId)
 	if err != nil {
 		return response.PatientDetailDto{}, err
 	}
@@ -60,7 +60,7 @@ func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.Patien
 
 func SearchPatientService(c *fiber.Ctx, patientName string) ([]response.SearchPatientDto, error) {
 
-	patients, err := helper.FindPatientsByName(patientName)
+	patients, err := repository.FindPatientsByName(patientName)
 	if err != nil {
 		return []response.SearchPatientDto{}, err
 	}

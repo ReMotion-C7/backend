@@ -1,4 +1,4 @@
-package helper
+package repository
 
 import (
 	"ReMotion-C7/app/dto/request"

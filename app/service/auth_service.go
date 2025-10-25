@@ -3,7 +3,7 @@ package service
 import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
-	"ReMotion-C7/app/helper"
+	"ReMotion-C7/app/repository"
 	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
 	"fmt"
@@ -13,7 +13,7 @@ import (
 
 func LoginService(c *fiber.Ctx, dto request.LoginDto) (response.UserDto, error) {
 
-	user, err := helper.FindUserByIdentifier(dto.Identifier)
+	user, err := repository.FindUserByIdentifier(dto.Identifier)
 	if err != nil {
 		return response.UserDto{}, err
 	}
@@ -35,12 +35,12 @@ func LoginService(c *fiber.Ctx, dto request.LoginDto) (response.UserDto, error) 
 
 func RegisterService(c *fiber.Ctx, dto request.RegisterDto) (response.UserDto, error) {
 
-	_, err := helper.FindUserByIdentifier(dto.Email)
+	_, err := repository.FindUserByIdentifier(dto.Email)
 	if err == nil {
 		return response.UserDto{}, fmt.Errorf(constant.ErrEmailAlreadyRegistered)
 	}
 
-	user, err := helper.AddUser(dto)
+	user, err := repository.AddUser(dto)
 	if err != nil {
 		return response.UserDto{}, err
 	}
