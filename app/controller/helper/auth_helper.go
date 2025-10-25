@@ -10,7 +10,7 @@ func FindUserByIdentifier(value string) (model.User, error) {
 	database := config.GetDatabase()
 	var user model.User
 
-	err := database.Where(`email = ? OR phoneNumber = ?`, value, value).First(&user).Error
+	err := database.Where(`email = ? OR phone_number = ?`, value, value).First(&user).Error
 	if err != nil {
 		return model.User{}, err
 	}
