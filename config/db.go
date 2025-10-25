@@ -31,7 +31,7 @@ func CheckConnection() {
 
 	sqlDb, err := database.DB()
 	if err != nil {
-		log.Fatalf(constant.ErrGetSQLInstance)
+		log.Fatalf(string(constant.ErrGetSQLInstance))
 	}
 
 	err = sqlDb.Ping()

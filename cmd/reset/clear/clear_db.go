@@ -25,7 +25,7 @@ func ClearDatabase(db *gorm.DB) {
 
 		err := db.Migrator().DropTable(table)
 		if err != nil {
-			log.Fatalf(constant.ErrResetTable)
+			log.Fatalf(string(constant.ErrResetTable))
 		}
 
 	}

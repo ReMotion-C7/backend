@@ -34,7 +34,7 @@ func Login(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, string(constant.SuccessLogin), response.AuthDataDto{
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessLogin, response.AuthDataDto{
 		AccessToken: accessToken,
 		TokenType:   "Bearer",
 		ExpiresIn:   "24h",
@@ -66,7 +66,7 @@ func Register(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, string(constant.SuccessRegister), response.AuthDataDto{
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessRegister, response.AuthDataDto{
 		AccessToken: accessToken,
 		TokenType:   "Bearer",
 		ExpiresIn:   "24h",

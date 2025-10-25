@@ -1,13 +1,12 @@
 package constant
 
-type Success string
-
 var (
-	SuccessConnectDatabase Success = "successfully connected to the database."
-	SuccessMigrateDatabase Success = "database migration completed successfully."
-	SuccessSeedDatabase    Success = "database seeding completed successfully."
-	SuccessLoadEnvFile     Success = "successfully loaded .env file."
-	SuccessResetTable      Success = "database tables reset successfully."
-	SuccessLogin           Success = "successfully login!"
-	SuccessRegister        Success = "successfully register!"
+	SuccessConnectDatabase = "successfully connected to the database."
+	SuccessMigrateDatabase = "database migration completed successfully."
+	SuccessSeedDatabase    = "database seeding completed successfully."
+	SuccessLoadEnvFile     = "successfully loaded .env file."
+	SuccessResetTable      = "database tables reset successfully."
+	SuccessLogin           = "successfully login!"
+	SuccessRegister        = "successfully register!"
+	SuccessCreateExercise  = "successfully create new exercise."
 )

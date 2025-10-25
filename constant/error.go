@@ -1,7 +1,5 @@
 package constant
 
-type Error string
-
 const (
 	ErrReadEnvFile            = "unable to read .env file."
 	ErrConnectingDatabase     = "unable to connect to database."
@@ -14,4 +12,5 @@ const (
 	ErrAllInputMustBeFilled   = "all input fields must be filled."
 	ErrInvalidCredentials     = "invalid credentials."
 	ErrEmailAlreadyRegistered = "email already registered."
+	ErrUploadFile             = "error while upload file"
 )

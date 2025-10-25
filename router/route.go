@@ -7,9 +7,16 @@ import (
 )
 
 func SetUp(app *fiber.App) {
-	
+
+	api := app.Group("/api/v1")
+
 	// AUTH ENPOINTS
-	app.Post("/api/v1/login", controller.Login)
-	app.Post("/api/v1/register", controller.Register)
+	auth := api.Group("/auth")
+	auth.Post("/login", controller.Login)
+	auth.Post("/register", controller.Register)
+
+	// EXERCISE ON FISIO ENDPOINTS
+	exerciseOnFisio := api.Group("/fisio/exercises")
+	exerciseOnFisio.Post("/create", controller.CreateExercise)
 
 }

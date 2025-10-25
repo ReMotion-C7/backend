@@ -12,12 +12,15 @@ import (
 
 func main() {
 
-	app := fiber.New(fiber.Config{})
+	app := fiber.New(fiber.Config{
+		BodyLimit: 50 * 1024 * 1024,
+	})
 
 	config.LoadEnv()
 
 	config.ConnectDatabase()
 	config.CheckConnection()
+	config.SetUpStorage()
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
