@@ -30,3 +30,20 @@ func LoginService(c *fiber.Ctx, loginDto request.LoginDto) (response.UserDto, er
 	return userDto, nil
 
 }
+
+func RegisterService(c *fiber.Ctx, registerDto request.RegisterDto) (response.UserDto, error) {
+
+	user, err := helper.AddUser(registerDto)
+	if err != nil {
+		return response.UserDto{}, err
+	}
+
+	userDto := response.UserDto{
+		Id:     int(user.ID),
+		Name:   user.Name,
+		RoleId: int(user.RoleID),
+	}
+
+	return userDto, nil
+
+}
