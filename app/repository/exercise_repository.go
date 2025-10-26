@@ -127,11 +127,16 @@ func FindExercisesByName(mode int, name string) (interface{}, error) {
 func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 
 	database := config.GetDatabase()
+
 	var exercise model.Exercise
 
 	err := database.Preload("Type").Where("id = ?", id).Find(&exercise).Error
 	if err != nil {
 		return response.ExerciseDetailForFisioDto{}, err
+	}
+
+	if exercise.ID == 0 {
+		return response.ExerciseDetailForFisioDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
 	}
 
 	return response.ExerciseDetailForFisioDto{
@@ -143,5 +148,22 @@ func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 		Image:       exercise.Image,
 		Video:       exercise.Video,
 	}, nil
+
+}
+
+func DeleteExercise(id int) error {
+
+	database := config.GetDatabase()
+
+	result := database.Delete(&model.Exercise{}, id)
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf(constant.ErrExerciseNotFound)
+	}
+
+	return nil
 
 }

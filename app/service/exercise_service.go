@@ -4,9 +4,7 @@ import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/repository"
-	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -53,17 +51,24 @@ func GetExercisesService(mode int, name string) (interface{}, error) {
 
 }
 
-func GetExerciseDetail(id int) (response.ExerciseDetailForFisioDto, error) {
+func GetExerciseDetailService(id int) (response.ExerciseDetailForFisioDto, error) {
 
 	exercise, err := repository.FindExercise(id)
 	if err != nil {
 		return response.ExerciseDetailForFisioDto{}, err
 	}
 
-	if exercise.Id == 0 {
-		return response.ExerciseDetailForFisioDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+	return exercise, nil
+
+}
+
+func DeleteExerciseService(id int) error {
+
+	err := repository.DeleteExercise(id)
+	if err != nil {
+		return err
 	}
 
-	return exercise, nil
+	return nil
 
 }

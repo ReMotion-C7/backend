@@ -21,6 +21,7 @@ func SetUp(app *fiber.App) {
 	exerciseOnFisio.Get("/", controller.GetExercises)
 	exerciseOnFisio.Get("/modal", controller.GetExercisesModal)
 	exerciseOnFisio.Get("/:id", controller.GetExerciseDetail)
+	exerciseOnFisio.Delete("/delete/:id", controller.DeleteExercise)
 
 	// PATIENT ON FISIO ENPOINTS
 	patientOnFisio := api.Group("/fisio/:id/patients")
@@ -39,5 +40,5 @@ func SetUp(app *fiber.App) {
 	patientsDetail := api.Group("/patients/:id")
 	patientsDetail.Get("/exercises", controller.GetPatientExercises)
 	patientsDetail.Get("/phase", controller.GetPatientPhase)
-	
+
 }

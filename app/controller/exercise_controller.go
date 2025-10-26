@@ -60,12 +60,29 @@ func GetExerciseDetail(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}
 
-	exercise, err := service.GetExerciseDetail(id)
+	exercise, err := service.GetExerciseDetailService(id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExerciseDetail, exercise)
+
+}
+
+func DeleteExercise(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
+	}
+
+	err = service.DeleteExerciseService(id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
+
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessDeleteExercise, nil)
 
 }

@@ -9,6 +9,7 @@ var (
 	SuccessLogin                 = "successfully login!"
 	SuccessRegister              = "successfully register!"
 	SuccessCreateExercise        = "successfully create new exercise."
+	SuccessDeleteExercise        = "successfully delete exercise"
 	SuccessFetchExercises        = "successfully fetch all exercise."
 	SuccessFetchExerciseDetail   = "successfully fetch exercise detail."
 	SuccessFetchPatients         = "successfully fetch all patient."
