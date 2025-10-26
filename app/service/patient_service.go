@@ -4,8 +4,6 @@ import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/repository"
-	"ReMotion-C7/constant"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -32,11 +30,22 @@ func EditPatientService(c *fiber.Ctx, dto request.EditPatientDto, fisioId int, p
 
 }
 
-func GetPatientsService(c *fiber.Ctx) ([]response.PatientDto, error) {
+func GetPatientsService(c *fiber.Ctx, patientName string) (interface{}, error) {
 
-	patients, err := repository.RetrievePatients()
+	if patientName == "" {
+
+		patients, err := repository.RetrievePatients()
+		if err != nil {
+			return nil, err
+		}
+
+		return patients, nil
+
+	}
+
+	patients, err := repository.FindPatientsByName(patientName)
 	if err != nil {
-		return []response.PatientDto{}, err
+		return nil, err
 	}
 
 	return patients, nil
@@ -50,25 +59,6 @@ func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.Patien
 		return response.PatientDetailDto{}, err
 	}
 
-	if patient.Id == 0 {
-		return response.PatientDetailDto{}, fmt.Errorf(constant.ErrPatientNotFound)
-	}
-
 	return patient, nil
-
-}
-
-func SearchPatientService(c *fiber.Ctx, patientName string) ([]response.SearchPatientDto, error) {
-
-	patients, err := repository.FindPatientsByName(patientName)
-	if err != nil {
-		return []response.SearchPatientDto{}, err
-	}
-
-	if len(patients) == 0 {
-		return []response.SearchPatientDto{}, fmt.Errorf(constant.ErrPatientNotFound)
-	}
-
-	return patients, nil
 
 }

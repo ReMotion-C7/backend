@@ -58,20 +58,11 @@ func GetPatients(c *fiber.Ctx) error {
 
 	patientName := c.Query("name")
 
-	if patientName == "" {
-		patients, err := service.GetPatientsService(c)
-		if err != nil {
-			return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-		}
-		return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, patients)
-	}
-
-	patients, err := service.SearchPatientService(c, patientName)
+	patients, err := service.GetPatientsService(c, patientName)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
-
-	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessSearchPatients, patients)
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, patients)
 
 }
 

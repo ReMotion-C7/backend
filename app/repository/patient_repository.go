@@ -132,6 +132,10 @@ func FindPatientsByName(patientName string) ([]response.SearchPatientDto, error)
 		return nil, err
 	}
 
+	if len(patients) == 0 {
+		return nil, fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
 	var dto []response.SearchPatientDto
 	for _, p := range patients {
 		dto = append(dto, response.SearchPatientDto{
@@ -159,6 +163,10 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 		Where("id = ? AND fisiotherapy_id = ?", patientId, fisioId).Find(&patient).Error
 	if err != nil {
 		return response.PatientDetailDto{}, err
+	}
+
+	if patient.ID == 0 {
+		return response.PatientDetailDto{}, fmt.Errorf(constant.ErrPatientNotFound)
 	}
 
 	var symptomNames []string
