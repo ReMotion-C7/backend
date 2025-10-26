@@ -52,6 +52,17 @@ func GetPatientsService(c *fiber.Ctx, patientName string) (interface{}, error) {
 
 }
 
+func GetPatientPhaseService(patientId int) (int, error) {
+
+	phase, err := repository.FindPatientPhaseById(patientId)
+	if err != nil {
+		return 0, err
+	}
+
+	return phase, nil
+	
+}
+
 func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.PatientDetailDto, error) {
 
 	patient, err := repository.FindPatientDetail(fisioId, patientId)

@@ -149,6 +149,21 @@ func FindPatientsByName(patientName string) ([]response.SearchPatientDto, error)
 
 }
 
+func FindPatientPhaseById(patientId int) (int, error) {
+
+	database := config.GetDatabase()
+
+	var patient model.Patient
+
+	err := database.Where(`id = ?`, patientId).First(&patient).Error
+	if err != nil {
+		return 0, fmt.Errorf(constant.ErrPatientNotFound)
+	}
+
+	return patient.Phase, nil
+
+}
+
 func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, error) {
 
 	database := config.GetDatabase()

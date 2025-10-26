@@ -19,4 +19,5 @@ var (
 	SuccessAssignExercise        = "successfully assign new exercises to patient."
 	SuccessEditPatientExercise   = "successfully edit patient's exercise."
 	SuccessDeletePatientExercise = "successfully delete patient's exercise."
+	SuccessFetchPatientPhase     = "successfully fetch patient's phase"
 )

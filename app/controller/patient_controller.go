@@ -66,6 +66,21 @@ func GetPatients(c *fiber.Ctx) error {
 
 }
 
+func GetPatientPhase(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	phase, err := service.GetPatientPhaseService(id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, phase)
+
+}
+
 func GetPatientDetail(c *fiber.Ctx) error {
 
 	fisioId, patientId, err := utils.ConvertToNum2Var(c, "id", "patient_id")
