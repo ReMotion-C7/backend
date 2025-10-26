@@ -31,11 +31,11 @@ func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) erro
 
 }
 
-func GetExercisesService(c *fiber.Ctx) ([]response.ExerciseDto, error) {
+func GetExercisesService(c *fiber.Ctx, mode int) (interface{}, error) {
 
-	exercises, err := repository.RetrieveExercises()
+	exercises, err := repository.RetrieveExercises(mode)
 	if err != nil {
-		return []response.ExerciseDto{}, err
+		return nil, err
 	}
 
 	return exercises, nil

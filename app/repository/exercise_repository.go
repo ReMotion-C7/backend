@@ -5,6 +5,7 @@ import (
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
+	"ReMotion-C7/constant"
 )
 
 func AddExercise(dto request.CreateEditExerciseDto, imageUrl string, videoUrl string) error {
@@ -29,7 +30,7 @@ func AddExercise(dto request.CreateEditExerciseDto, imageUrl string, videoUrl st
 
 }
 
-func RetrieveExercises() ([]response.ExerciseDto, error) {
+func RetrieveExercises(mode int) (interface{}, error) {
 
 	database := config.GetDatabase()
 
@@ -40,9 +41,51 @@ func RetrieveExercises() ([]response.ExerciseDto, error) {
 		return []response.ExerciseDto{}, err
 	}
 
-	var exercisesDto []response.ExerciseDto
+	if mode == constant.ExerciseDefault {
+
+		var dto []response.ExerciseDto
+		for _, e := range exercises {
+			dto = append(dto, response.ExerciseDto{
+				Id:          int(e.ID),
+				Name:        e.Name,
+				Type:        e.Type.Name,
+				Description: e.Description,
+				Muscle:      e.Muscle,
+				Image:       e.Image,
+			})
+		}
+		return dto, nil
+
+	}
+
+	var dto []response.ExerciseModalDto
 	for _, e := range exercises {
-		exercisesDto = append(exercisesDto, response.ExerciseDto{
+		dto = append(dto, response.ExerciseModalDto{
+			Id:     int(e.ID),
+			Name:   e.Name,
+			Type:   e.Type.Name,
+			Muscle: e.Muscle,
+			Image:  e.Image,
+		})
+	}
+	return dto, nil
+
+}
+
+func RetrieveExercisesModal() ([]response.ExerciseDto, error) {
+
+	database := config.GetDatabase()
+
+	var exercises []model.Exercise
+
+	err := database.Preload("Type").Find(&exercises).Error
+	if err != nil {
+		return []response.ExerciseDto{}, err
+	}
+
+	var dto []response.ExerciseDto
+	for _, e := range exercises {
+		dto = append(dto, response.ExerciseDto{
 			Id:          int(e.ID),
 			Name:        e.Name,
 			Type:        e.Type.Name,
@@ -52,7 +95,7 @@ func RetrieveExercises() ([]response.ExerciseDto, error) {
 		})
 	}
 
-	return exercisesDto, nil
+	return dto, nil
 
 }
 

@@ -29,7 +29,18 @@ func CreateExercise(c *fiber.Ctx) error {
 
 func GetExercises(c *fiber.Ctx) error {
 
-	exercises, err := service.GetExercisesService(c)
+	exercises, err := service.GetExercisesService(c, constant.ExerciseDefault)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, exercises)
+
+}
+
+func GetExercisesModal(c *fiber.Ctx) error {
+
+	exercises, err := service.GetExercisesService(c, constant.ExerciseModal)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}

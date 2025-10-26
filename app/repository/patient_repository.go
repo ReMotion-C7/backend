@@ -100,10 +100,10 @@ func RetrievePatients() ([]response.PatientDto, error) {
 		return []response.PatientDto{}, err
 	}
 
-	var patientsDto []response.PatientDto
+	var dto []response.PatientDto
 
 	for _, p := range patients {
-		patientsDto = append(patientsDto, response.PatientDto{
+		dto = append(dto, response.PatientDto{
 			Id:               int(p.ID),
 			Name:             p.PatientUser.Name,
 			PhoneNumber:      p.PatientUser.PhoneNumber,
@@ -113,7 +113,7 @@ func RetrievePatients() ([]response.PatientDto, error) {
 		})
 	}
 
-	return patientsDto, nil
+	return dto, nil
 
 }
 
@@ -132,16 +132,16 @@ func FindPatientsByName(patientName string) ([]response.SearchPatientDto, error)
 		return nil, err
 	}
 
-	var searchPatientsDto []response.SearchPatientDto
+	var dto []response.SearchPatientDto
 	for _, p := range patients {
-		searchPatientsDto = append(searchPatientsDto, response.SearchPatientDto{
+		dto = append(dto, response.SearchPatientDto{
 			Id:          int(p.ID),
 			Name:        p.PatientUser.Name,
 			PhoneNumber: p.PatientUser.PhoneNumber,
 		})
 	}
 
-	return searchPatientsDto, nil
+	return dto, nil
 
 }
 
@@ -166,9 +166,9 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 		symptomNames = append(symptomNames, s.Name)
 	}
 
-	var patientExercises []response.PatientExerciseForFisioDto
+	var dto []response.PatientExerciseForFisioDto
 	for _, e := range patient.PatientExercises {
-		patientExercises = append(patientExercises, response.PatientExerciseForFisioDto{
+		dto = append(dto, response.PatientExerciseForFisioDto{
 			Id:          int(e.ExerciseID),
 			Name:        e.Exercise.Name,
 			Type:        e.Exercise.Type.Name,
@@ -189,7 +189,7 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 		DateOfBirth:                patient.PatientUser.DateOfBirth.Format("2006-01-02"),
 		TherapyStartDate:           patient.TherapyStartDate.Format("2006-01-02"),
 		Symptoms:                   symptomNames,
-		PatientExerciseForFisioDto: patientExercises,
+		PatientExerciseForFisioDto: dto,
 	}, nil
 
 }
