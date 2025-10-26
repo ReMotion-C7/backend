@@ -7,11 +7,9 @@ import (
 	"ReMotion-C7/constant"
 	"ReMotion-C7/utils"
 	"fmt"
-
-	"github.com/gofiber/fiber/v2"
 )
 
-func LoginService(c *fiber.Ctx, dto request.LoginDto) (response.UserDto, error) {
+func LoginService(dto request.LoginDto) (response.UserDto, error) {
 
 	user, err := repository.FindUserByIdentifier(dto.Identifier)
 	if err != nil {
@@ -33,7 +31,7 @@ func LoginService(c *fiber.Ctx, dto request.LoginDto) (response.UserDto, error) 
 
 }
 
-func RegisterService(c *fiber.Ctx, dto request.RegisterDto) (response.UserDto, error) {
+func RegisterService(dto request.RegisterDto) (response.UserDto, error) {
 
 	_, err := repository.FindUserByIdentifier(dto.Email)
 	if err == nil {

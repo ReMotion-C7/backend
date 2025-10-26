@@ -19,7 +19,7 @@ func Login(c *fiber.Ctx) error {
 		return err
 	}
 
-	user, err := service.LoginService(c, dto)
+	user, err := service.LoginService(dto)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, constant.ErrInvalidCredentials, nil)
 	}
@@ -46,7 +46,7 @@ func Register(c *fiber.Ctx) error {
 		return err
 	}
 
-	user, err := service.RegisterService(c, dto)
+	user, err := service.RegisterService(dto)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}

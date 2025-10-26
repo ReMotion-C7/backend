@@ -23,7 +23,7 @@ func AddPatient(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = service.AddPatientService(c, dto, id)
+	err = service.AddPatientService(dto, id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -45,7 +45,7 @@ func EditPatient(c *fiber.Ctx) error {
 		return err
 	}
 
-	err = service.EditPatientService(c, dto, fisioId, patientId)
+	err = service.EditPatientService(dto, fisioId, patientId)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}
@@ -58,7 +58,7 @@ func GetPatients(c *fiber.Ctx) error {
 
 	patientName := c.Query("name")
 
-	patients, err := service.GetPatientsService(c, patientName)
+	patients, err := service.GetPatientsService(patientName)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -88,7 +88,7 @@ func GetPatientDetail(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	patient, err := service.GetPatientDetail(c, fisioId, patientId)
+	patient, err := service.GetPatientDetail(fisioId, patientId)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 	}

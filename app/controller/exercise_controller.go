@@ -31,7 +31,7 @@ func GetExercises(c *fiber.Ctx) error {
 
 	name := c.Query("name")
 
-	exercises, err := service.GetExercisesService(c, constant.ExerciseDefault, name)
+	exercises, err := service.GetExercisesService(constant.ExerciseDefault, name)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -44,7 +44,7 @@ func GetExercisesModal(c *fiber.Ctx) error {
 
 	name := c.Query("name")
 
-	exercises, err := service.GetExercisesService(c, constant.ExerciseModal, name)
+	exercises, err := service.GetExercisesService(constant.ExerciseModal, name)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -60,7 +60,7 @@ func GetExerciseDetail(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusBadRequest, err.Error(), nil)
 	}
 
-	exercise, err := service.GetExerciseDetail(c, id)
+	exercise, err := service.GetExerciseDetail(id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
 

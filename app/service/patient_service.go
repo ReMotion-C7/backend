@@ -4,11 +4,9 @@ import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/repository"
-
-	"github.com/gofiber/fiber/v2"
 )
 
-func AddPatientService(c *fiber.Ctx, dto request.AddPatientDto, id int) error {
+func AddPatientService(dto request.AddPatientDto, id int) error {
 
 	err := repository.AddPatient(dto, id)
 	if err != nil {
@@ -19,7 +17,7 @@ func AddPatientService(c *fiber.Ctx, dto request.AddPatientDto, id int) error {
 
 }
 
-func EditPatientService(c *fiber.Ctx, dto request.EditPatientDto, fisioId int, patientId int) error {
+func EditPatientService(dto request.EditPatientDto, fisioId int, patientId int) error {
 
 	err := repository.EditPatient(dto, fisioId, patientId)
 	if err != nil {
@@ -30,7 +28,7 @@ func EditPatientService(c *fiber.Ctx, dto request.EditPatientDto, fisioId int, p
 
 }
 
-func GetPatientsService(c *fiber.Ctx, patientName string) (interface{}, error) {
+func GetPatientsService(patientName string) (interface{}, error) {
 
 	if patientName == "" {
 
@@ -60,10 +58,10 @@ func GetPatientPhaseService(patientId int) (int, error) {
 	}
 
 	return phase, nil
-	
+
 }
 
-func GetPatientDetail(c *fiber.Ctx, fisioId int, patientId int) (response.PatientDetailDto, error) {
+func GetPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, error) {
 
 	patient, err := repository.FindPatientDetail(fisioId, patientId)
 	if err != nil {

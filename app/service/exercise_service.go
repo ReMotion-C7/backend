@@ -31,7 +31,7 @@ func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) erro
 
 }
 
-func GetExercisesService(c *fiber.Ctx, mode int, name string) (interface{}, error) {
+func GetExercisesService(mode int, name string) (interface{}, error) {
 
 	if name == "" {
 
@@ -53,7 +53,7 @@ func GetExercisesService(c *fiber.Ctx, mode int, name string) (interface{}, erro
 
 }
 
-func GetExerciseDetail(c *fiber.Ctx, id int) (response.ExerciseDetailForFisioDto, error) {
+func GetExerciseDetail(id int) (response.ExerciseDetailForFisioDto, error) {
 
 	exercise, err := repository.FindExercise(id)
 	if err != nil {
