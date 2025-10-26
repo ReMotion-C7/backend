@@ -32,6 +32,22 @@ func AssignExercise(c *fiber.Ctx) error {
 
 }
 
+func GetPatientExercises(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	exercises, err := service.GetPatientExercisesService(id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, exercises)
+
+}
+
 func EditPatientExercise(c *fiber.Ctx) error {
 
 	patientId, exerciseId, err := utils.ConvertToNum2Var(c, "patient_id", "exercise_id")

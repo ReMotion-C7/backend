@@ -35,4 +35,8 @@ func SetUp(app *fiber.App) {
 	patientsExerciseOnFisio.Patch("/edit/:exercise_id", controller.EditPatientExercise)
 	patientsExerciseOnFisio.Delete("/delete/:exercise_id", controller.DeletePatientExercise)
 
+	// PATIENT'S DETAIL ENPOINTS
+	patientsDetail := api.Group("/patients/:id")
+	patientsDetail.Get("/exercises", controller.GetPatientExercises)
+	// patientsDetail.Get("/phase")
 }
