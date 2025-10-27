@@ -63,6 +63,7 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 	}
 
 	var dto []response.PatientSessionDto
+
 	for _, e := range patientExercises {
 		dto = append(dto, response.PatientSessionDto{
 			Id:        int(e.ExerciseID),
@@ -79,6 +80,42 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 }
 
+func RetrievePatientDetailExercise(patientId int, exerciseId int) ([]response.ExerciseDetailForPatientDto, error) {
+
+	database := config.GetDatabase()
+
+	var patientExercises []model.PatientExercise
+
+	err := database.Preload("Exercise.Type").
+		Where(`patient_id = ? AND exercise_id = ?`, patientId, exerciseId).
+		Find(&patientExercises).Error
+	if err != nil {
+		return []response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+	}
+
+	if len(patientExercises) == 0 {
+		return []response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+	}
+
+	var dto []response.ExerciseDetailForPatientDto
+
+	for _, e := range patientExercises {
+		dto = append(dto, response.ExerciseDetailForPatientDto{
+			Id:          int(e.ExerciseID),
+			Name:        e.Exercise.Name,
+			Description: e.Exercise.Description,
+			Type:        e.Exercise.Type.Name,
+			Muscle:      e.Exercise.Muscle,
+			Video:       e.Exercise.Video,
+			Set:         e.Set,
+			RepOrTime:   e.RepOrTime,
+		})
+	}
+
+	return dto, nil
+
+}
+
 func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exerciseId int) error {
 
 	database := config.GetDatabase()
@@ -88,7 +125,7 @@ func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exer
 	if err := database.
 		Where("patient_id = ? AND exercise_id = ?", patientId, exerciseId).
 		First(&patientExercise).Error; err != nil {
-		return fmt.Errorf(constant.ErrPatientExerciseNotFound)
+		return fmt.Errorf(constant.ErrExerciseNotFound)
 	}
 
 	err := database.Model(&patientExercise).
@@ -114,7 +151,7 @@ func DeletePatientExercise(patientId int, exerciseId int) error {
 		First(&patientExercise).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fmt.Errorf(constant.ErrPatientExerciseNotFound)
+			return fmt.Errorf(constant.ErrExerciseNotFound)
 		}
 		return err
 	}

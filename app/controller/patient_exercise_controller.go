@@ -48,6 +48,22 @@ func GetPatientExercises(c *fiber.Ctx) error {
 
 }
 
+func GetPatientExerciseDetail(c *fiber.Ctx) error {
+
+	patientId, exerciseId, err := utils.ConvertToNum2Var(c, "id", "exercise_id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	exercise, err := service.GetPatientExerciseDetailService(patientId, exerciseId)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusNotFound, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, exercise)
+
+}
+
 func GetPatientSession(c *fiber.Ctx) error {
 
 	id, err := utils.ConvertToNum(c, "id")

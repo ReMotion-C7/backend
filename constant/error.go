@@ -15,5 +15,4 @@ const (
 	ErrUploadFile              = "error while upload file"
 	ErrExerciseNotFound        = "exercise not found"
 	ErrPatientNotFound         = "patient not found"
-	ErrPatientExerciseNotFound = "patient's exercise not found"
 )

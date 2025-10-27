@@ -39,6 +39,7 @@ func SetUp(app *fiber.App) {
 	// PATIENT'S DETAIL ENPOINTS
 	patientsDetail := api.Group("/patients/:id")
 	patientsDetail.Get("/exercises", controller.GetPatientExercises)
+	patientsDetail.Get("/exercises/:exercise_id", controller.GetPatientExerciseDetail)
 	patientsDetail.Get("/phase", controller.GetPatientPhase)
 	patientsDetail.Get("/exercises/session", controller.GetPatientSession)
 
