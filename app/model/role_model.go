@@ -4,5 +4,5 @@ import "gorm.io/gorm"
 
 type Role struct {
 	gorm.Model
-	Name string `gorm:"column:name"`
+	Name  string `gorm:"column:name"`
 }

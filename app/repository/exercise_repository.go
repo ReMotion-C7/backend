@@ -14,9 +14,11 @@ func AddExercise(dto request.CreateEditExerciseDto, imageUrl string, videoUrl st
 
 	database := config.GetDatabase()
 
+	typeId := uint(dto.TypeId)
+
 	exercise := model.Exercise{
 		Name:        dto.Name,
-		TypeID:      uint(dto.TypeId),
+		TypeID:      &typeId,
 		Description: dto.Description,
 		Muscle:      dto.Muscle,
 		Image:       imageUrl,
@@ -154,7 +156,7 @@ func DeleteExercise(id int) error {
 
 	database := config.GetDatabase()
 
-	result := database.Delete(&model.Exercise{}, id)
+	result := database.Unscoped().Delete(&model.Exercise{}, id)
 	if result.Error != nil {
 		return result.Error
 	}

@@ -36,14 +36,17 @@ func AddUser(dto request.RegisterDto) (model.User, error) {
 		return model.User{}, err
 	}
 
+	roleId := uint(2)
+	genderId := uint(dto.GenderId)
+
 	user := model.User{
 		Name:        dto.Name,
 		Email:       dto.Email,
 		PhoneNumber: dto.PhoneNumber,
 		Password:    hashPassword,
 		DateOfBirth: dob,
-		RoleID:      2,
-		GenderID:    uint(dto.GenderId),
+		RoleID:      &roleId,
+		GenderID:    &genderId,
 	}
 
 	err = database.Create(&user).Error

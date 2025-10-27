@@ -191,8 +191,11 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 
 	var dto []response.PatientExerciseForFisioDto
 	for _, e := range patient.PatientExercises {
+
+		exerciseId := int(e.ExerciseID)
+
 		dto = append(dto, response.PatientExerciseForFisioDto{
-			Id:          int(e.ExerciseID),
+			Id:          exerciseId,
 			Name:        e.Exercise.Name,
 			Type:        e.Exercise.Type.Name,
 			Image:       e.Exercise.Image,

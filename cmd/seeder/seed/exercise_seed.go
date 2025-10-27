@@ -25,6 +25,9 @@ func SeedTypes(db *gorm.DB) {
 
 func SeedExercises(db *gorm.DB) {
 
+	typeId1 := uint(1)
+	typeId2 := uint(2)
+
 	exercises := []model.Exercise{
 		{
 			Name:        "Straight Leg Raise",
@@ -32,7 +35,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps",
 			Image:       "straight_leg_raise.jpg",
 			Video:       "straight_leg_raise.mp4",
-			TypeID:      1,
+			TypeID:      &typeId1,
 		},
 		{
 			Name:        "Heel Slide",
@@ -40,7 +43,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Hamstring",
 			Image:       "heel_slide.jpg",
 			Video:       "heel_slide.mp4",
-			TypeID:      1,
+			TypeID:      &typeId1,
 		},
 		{
 			Name:        "Seated Knee Extension",
@@ -48,7 +51,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps",
 			Image:       "seated_knee_extension.jpg",
 			Video:       "seated_knee_extension.mp4",
-			TypeID:      1,
+			TypeID:      &typeId1,
 		},
 		{
 			Name:        "Side-Lying Hip Abduction",
@@ -56,7 +59,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Gluteus Medius",
 			Image:       "side_lying_hip_abduction.jpg",
 			Video:       "side_lying_hip_abduction.mp4",
-			TypeID:      1,
+			TypeID:      &typeId1,
 		},
 		{
 			Name:        "Mini Squat",
@@ -64,7 +67,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps, Gluteus",
 			Image:       "mini_squat.jpg",
 			Video:       "mini_squat.mp4",
-			TypeID:      1,
+			TypeID:      &typeId1,
 		},
 		{
 			Name:        "Wall Sit",
@@ -72,7 +75,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps, Gluteus",
 			Image:       "wall_sit.jpg",
 			Video:       "wall_sit.mp4",
-			TypeID:      2,
+			TypeID:      &typeId2,
 		},
 		{
 			Name:        "Bridging",
@@ -80,7 +83,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Gluteus, Hamstring",
 			Image:       "bridging.jpg",
 			Video:       "bridging.mp4",
-			TypeID:      2,
+			TypeID:      &typeId2,
 		},
 		{
 			Name:        "Plank",
@@ -88,7 +91,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Core, Gluteus",
 			Image:       "plank.jpg",
 			Video:       "plank.mp4",
-			TypeID:      2,
+			TypeID:      &typeId2,
 		},
 		{
 			Name:        "Single Leg Balance",
@@ -96,7 +99,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps, Calves",
 			Image:       "single_leg_balance.jpg",
 			Video:       "single_leg_balance.mp4",
-			TypeID:      2,
+			TypeID:      &typeId2,
 		},
 		{
 			Name:        "Step-Up Hold",
@@ -104,7 +107,7 @@ func SeedExercises(db *gorm.DB) {
 			Muscle:      "Quadriceps, Gluteus",
 			Image:       "step_up_hold.jpg",
 			Video:       "step_up_hold.mp4",
-			TypeID:      2,
+			TypeID:      &typeId2,
 		},
 	}
 
@@ -138,13 +141,13 @@ func SeedPatientExercises(db *gorm.DB) {
 
 		for _ = range make([]struct{}, exerciseTotal) {
 
-			exerciseId := rand.IntN(len(exercises)) + 1
+			exerciseId := uint(rand.IntN(len(exercises)) + 1)
 
 			patientExercise := model.PatientExercise{
 				Set:        (rand.IntN(3) + 1),
 				RepOrTime:  (rand.IntN(3) + 1) * 10,
 				PatientID:  patient.ID,
-				ExerciseID: uint(exerciseId ),
+				ExerciseID: exerciseId,
 			}
 
 			patientExercises = append(patientExercises, patientExercise)

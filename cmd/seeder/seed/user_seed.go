@@ -76,14 +76,16 @@ func SeedUsers(db *gorm.DB) {
 			roleID = 2
 		}
 
+		genderId := uint(rand.IntN(2) + 1)
+
 		user := model.User{
 			Name:        faker.Name(),
 			Email:       faker.Email(),
 			Password:    hashPassword,
 			PhoneNumber: faker.Phonenumber(),
 			DateOfBirth: date,
-			RoleID:      roleID,
-			GenderID:    uint(rand.IntN(3) + 1),
+			RoleID:      &roleID,
+			GenderID:    &genderId,
 		}
 
 		users = append(users, user)

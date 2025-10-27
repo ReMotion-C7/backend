@@ -13,8 +13,8 @@ type User struct {
 	PhoneNumber string    `gorm:"column:phone_number"`
 	Password    string    `gorm:"column:password"`
 	DateOfBirth time.Time `gorm:"column:date_of_birth"`
-	RoleID      uint      `gorm:"column:role_id"`
-	Role        Role      `gorm:"foreignKey:RoleID"`
-	GenderID    uint      `gorm:"column:gender_id"`
-	Gender      Gender    `gorm:"foreignKey:GenderID"`
+	RoleID      *uint     `gorm:"column:role_id"`
+	Role        Role      `gorm:"foreignKey:RoleID;constraint:OnDelete:SET NULL;"`
+	GenderID    *uint     `gorm:"column:gender_id"`
+	Gender      Gender    `gorm:"foreignKey:GenderID;constraint:OnDelete:SET NULL;"`
 }

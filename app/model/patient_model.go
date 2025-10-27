@@ -11,9 +11,9 @@ type Patient struct {
 	Phase            int               `gorm:"column:phase"`
 	TherapyStartDate time.Time         `gorm:"column:therapy_start_date"`
 	UserID           uint              `gorm:"column:user_id"`
-	PatientUser      User              `gorm:"foreignKey:UserID"`
+	PatientUser      User              `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 	FisiotherapyID   uint              `gorm:"column:fisiotherapy_id"`
-	FisiotherapyUser User              `gorm:"foreignKey:FisiotherapyID"`
-	Symptoms         []Symptom         `gorm:"foreignKey:PatientID"`
-	PatientExercises []PatientExercise `gorm:"foreignKey:PatientID"`
+	FisiotherapyUser User              `gorm:"foreignKey:FisiotherapyID;constraint:OnDelete:SET NULL;"`
+	Symptoms         []Symptom         `gorm:"foreignKey:PatientID;constraint:OnDelete:CASCADE;"`
+	PatientExercises []PatientExercise `gorm:"foreignKey:PatientID;constraint:OnDelete:CASCADE;"`
 }

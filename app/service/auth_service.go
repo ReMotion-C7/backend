@@ -24,7 +24,7 @@ func LoginService(dto request.LoginDto) (response.UserDto, error) {
 	userDto := response.UserDto{
 		Id:     int(user.ID),
 		Name:   user.Name,
-		RoleId: int(user.RoleID),
+		RoleId: int(*user.RoleID),
 	}
 
 	return userDto, nil
@@ -46,7 +46,7 @@ func RegisterService(dto request.RegisterDto) (response.UserDto, error) {
 	userDto := response.UserDto{
 		Id:     int(user.ID),
 		Name:   user.Name,
-		RoleId: int(user.RoleID),
+		RoleId: int(*user.RoleID),
 	}
 
 	return userDto, nil

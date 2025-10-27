@@ -12,13 +12,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func AddExerciseToPatient(dto request.AssignExerciseToPatientDto, patientId int) error {
+func AddExerciseToPatient(dto request.AssignExerciseToPatientDto, id int) error {
 
 	database := config.GetDatabase()
 
+	patientId := uint(id)
+	exerciseId := uint(dto.ExerciseId)
+
 	patientExercise := model.PatientExercise{
-		PatientID:  uint(patientId),
-		ExerciseID: uint(dto.ExerciseId),
+		PatientID:  patientId,
+		ExerciseID: exerciseId,
 		Set:        dto.Set,
 		RepOrTime:  dto.RepOrTime,
 	}
@@ -47,8 +50,11 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 		var dto []response.ExerciseForPatientDto
 		for _, e := range patientExercises {
+
+			exerciseId := int(e.ExerciseID)
+
 			dto = append(dto, response.ExerciseForPatientDto{
-				Id:        int(e.ExerciseID),
+				Id:        exerciseId,
 				Name:      e.Exercise.Name,
 				Type:      e.Exercise.Type.Name,
 				Muscle:    e.Exercise.Muscle,
@@ -65,8 +71,11 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 	var dto []response.PatientSessionDto
 
 	for _, e := range patientExercises {
+
+		exerciseId := int(e.ExerciseID)
+
 		dto = append(dto, response.PatientSessionDto{
-			Id:        int(e.ExerciseID),
+			Id:        exerciseId,
 			Name:      e.Exercise.Name,
 			Type:      e.Exercise.Type.Name,
 			Muscle:    e.Exercise.Muscle,
@@ -100,8 +109,11 @@ func RetrievePatientDetailExercise(patientId int, exerciseId int) ([]response.Ex
 	var dto []response.ExerciseDetailForPatientDto
 
 	for _, e := range patientExercises {
+
+		exerciseId := int(e.ExerciseID)
+
 		dto = append(dto, response.ExerciseDetailForPatientDto{
-			Id:          int(e.ExerciseID),
+			Id:          exerciseId,
 			Name:        e.Exercise.Name,
 			Description: e.Exercise.Description,
 			Type:        e.Exercise.Type.Name,
@@ -156,7 +168,7 @@ func DeletePatientExercise(patientId int, exerciseId int) error {
 		return err
 	}
 
-	err = database.Delete(&patientExercise).Error
+	err = database.Unscoped().Delete(&patientExercise).Error
 	if err != nil {
 		return err
 	}
