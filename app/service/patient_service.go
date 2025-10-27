@@ -45,7 +45,7 @@ func GetPatientsService(c *fiber.Ctx, fisioId int) (interface{}, error) {
 
 	}
 
-	patients, err := repository.FindPatientsByName(patientName)
+	patients, err := repository.FindUserByName(patientName)
 	if err != nil {
 		return nil, err
 	}
