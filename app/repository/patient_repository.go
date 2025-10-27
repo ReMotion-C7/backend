@@ -70,7 +70,7 @@ func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
 		return err
 	}
 
-	err = database.Where(`patient_id = ?`, patientId).Delete(&model.Symptom{}).Error
+	err = database.Where(`patient_id = ?`, patientId).Unscoped().Delete(&model.Symptom{}).Error
 	if err != nil {
 		return fmt.Errorf(constant.ErrPatientNotFound)
 	}
