@@ -145,7 +145,6 @@ func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 		Type:        exercise.Type.Name,
 		Description: exercise.Description,
 		Muscle:      exercise.Muscle,
-		Image:       exercise.Image,
 		Video:       exercise.Video,
 	}, nil
 
