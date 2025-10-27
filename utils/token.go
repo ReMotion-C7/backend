@@ -3,6 +3,8 @@ package utils
 import (
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/config"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -34,12 +36,18 @@ func ParseToken(c *fiber.Ctx) (jwt.MapClaims, error) {
 
 	token := c.Get("Authorization")
 
+	tokenString := strings.TrimPrefix(token, "Bearer ")
+	tokenString = strings.TrimSpace(tokenString)
+	fmt.Println(token)
+
 	claims := jwt.MapClaims{}
 
-	parsedToken, err := jwt.ParseWithClaims(token, claims, GetSecretKey)
+	parsedToken, err := jwt.ParseWithClaims(tokenString, claims, GetSecretKey)
 	if err != nil || !parsedToken.Valid {
 		return nil, err
 	}
+
+	fmt.Println(claims)
 
 	return claims, nil
 

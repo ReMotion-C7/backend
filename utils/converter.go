@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,6 +10,8 @@ import (
 func ConvertToNum(c *fiber.Ctx, idStr string) (int, error) {
 
 	id := c.Params(idStr)
+
+	fmt.Println(id)
 
 	idNum, err := strconv.Atoi(id)
 	if err != nil {
@@ -20,7 +23,7 @@ func ConvertToNum(c *fiber.Ctx, idStr string) (int, error) {
 }
 
 func ConvertToNum2Var(c *fiber.Ctx, id1Str string, id2Str string) (int, int, error) {
-	
+
 	id1Num, err := ConvertToNum(c, id1Str)
 	if err != nil {
 		return 0, 0, err

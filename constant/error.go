@@ -16,4 +16,7 @@ const (
 	ErrExerciseNotFound       = "exercise not found"
 	ErrPatientNotFound        = "patient not found"
 	ErrPermissionDenied       = "access denied"
+	ErrInvalidTokenError      = "token provided is invalid"
+	ErrInvalidPatient         = "invalid patient requested by fisiotherapy"
+	ErrInvalidFisio           = "invalid fisiotherapy request"
 )

@@ -29,7 +29,9 @@ func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) erro
 
 }
 
-func GetExercisesService(mode int, name string) (interface{}, error) {
+func GetExercisesService(c *fiber.Ctx, mode int) (interface{}, error) {
+
+	name := c.Query("name")
 
 	if name == "" {
 

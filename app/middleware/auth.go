@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"ReMotion-C7/constant"
+	"ReMotion-C7/output"
 	"ReMotion-C7/utils"
 	"fmt"
 
@@ -12,9 +13,9 @@ func UserMiddleware(c *fiber.Ctx) error {
 
 	expectedRoleId := 2
 
-	err := GetAuthorizedUser(c, expectedRoleId)
+	_, err := GetAuthorizedUser(c, expectedRoleId)
 	if err != nil {
-		return err
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
 	return c.Next()
@@ -25,27 +26,38 @@ func FisioMiddleware(c *fiber.Ctx) error {
 
 	expectedRoleId := 1
 
-	err := GetAuthorizedUser(c, expectedRoleId)
+	fisioId, err := utils.ConvertToNum(c, "id")
 	if err != nil {
-		return err
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	userId, err := GetAuthorizedUser(c, expectedRoleId)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	if fisioId != userId {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, constant.ErrInvalidFisio, nil)
 	}
 
 	return c.Next()
 
 }
 
-func GetAuthorizedUser(c *fiber.Ctx, expectedRoleId int) error {
+func GetAuthorizedUser(c *fiber.Ctx, expectedRoleId int) (int, error) {
 
 	claims, err := utils.ParseToken(c)
 	if err != nil {
-		return err
+		return 0, fmt.Errorf(constant.ErrInvalidTokenError)
 	}
 
-	roleId, ok := claims["roleId"].(int)
-	if roleId != expectedRoleId || !ok {
-		return fmt.Errorf(constant.ErrPermissionDenied)
+	roleId := claims["roleId"].(float64)
+	if int(roleId) != expectedRoleId {
+		return 0, fmt.Errorf(constant.ErrPermissionDenied)
 	}
 
-	return nil
+	userId := claims["id"].(float64)
+
+	return int(userId), nil
 
 }

@@ -56,9 +56,12 @@ func EditPatient(c *fiber.Ctx) error {
 
 func GetPatients(c *fiber.Ctx) error {
 
-	patientName := c.Query("name")
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
 
-	patients, err := service.GetPatientsService(patientName)
+	patients, err := service.GetPatientsService(c, id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}

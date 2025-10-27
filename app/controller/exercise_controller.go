@@ -29,9 +29,7 @@ func CreateExercise(c *fiber.Ctx) error {
 
 func GetExercises(c *fiber.Ctx) error {
 
-	name := c.Query("name")
-
-	exercises, err := service.GetExercisesService(constant.ExerciseDefault, name)
+	exercises, err := service.GetExercisesService(c, constant.ExerciseDefault)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
@@ -42,9 +40,7 @@ func GetExercises(c *fiber.Ctx) error {
 
 func GetExercisesModal(c *fiber.Ctx) error {
 
-	name := c.Query("name")
-
-	exercises, err := service.GetExercisesService(constant.ExerciseModal, name)
+	exercises, err := service.GetExercisesService(c, constant.ExerciseModal)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}

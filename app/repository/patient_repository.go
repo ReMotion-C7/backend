@@ -90,12 +90,12 @@ func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
 	return nil
 }
 
-func RetrievePatients() ([]response.PatientDto, error) {
+func RetrievePatients(id int) ([]response.PatientDto, error) {
 
 	database := config.GetDatabase()
 	var patients []model.Patient
 
-	err := database.Preload("PatientUser").Find(&patients).Error
+	err := database.Preload("PatientUser").Where(`fisiotherapy_id = ?`, id).Find(&patients).Error
 	if err != nil {
 		return []response.PatientDto{}, err
 	}
@@ -146,6 +146,21 @@ func FindPatientsByName(patientName string) ([]response.SearchPatientDto, error)
 	}
 
 	return dto, nil
+
+}
+
+func FindPatientById(fisioId int, patientId int) error {
+
+	database := config.GetDatabase()
+
+	var patient model.Patient
+
+	err := database.Where(`id = ? AND fisiotherapy_id = ?`, patientId, fisioId).First(&patient).Error
+	if err != nil {
+		return fmt.Errorf(constant.ErrInvalidPatient)
+	}
+
+	return nil
 
 }
 
