@@ -32,7 +32,7 @@ func SetUp(app *fiber.App) {
 	patientOnFisio.Get("/:patient_id", middleware.PatientOwnership, controller.GetPatientDetail)
 
 	// PATIENT'S EXERCISE ON FISIO ENPOINTS
-	patientsExerciseOnFisio := patientOnFisio.Group("/:patient_id/exercises", middleware.FisioMiddleware, middleware.PatientOwnership)
+	patientsExerciseOnFisio := patientOnFisio.Group("/:patient_id/exercises", middleware.PatientOwnership)
 	patientsExerciseOnFisio.Post("/assign", controller.AssignExercise)
 	patientsExerciseOnFisio.Patch("/edit/:exercise_id", controller.EditPatientExercise)
 	patientsExerciseOnFisio.Delete("/delete/:exercise_id", controller.DeletePatientExercise)
