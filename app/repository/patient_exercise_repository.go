@@ -52,7 +52,7 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 				Name:      e.Exercise.Name,
 				Type:      e.Exercise.Type.Name,
 				Muscle:    e.Exercise.Muscle,
-				Image:     e.Exercise.Image,
+				Video:     e.Exercise.Video,
 				Set:       e.Set,
 				RepOrTime: e.RepOrTime,
 			})
@@ -70,7 +70,7 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 			Name:      e.Exercise.Name,
 			Type:      e.Exercise.Type.Name,
 			Muscle:    e.Exercise.Muscle,
-			Video:     e.Exercise.Video,
+			Image:     e.Exercise.Image,
 			Set:       e.Set,
 			RepOrTime: e.RepOrTime,
 		})

@@ -32,6 +32,22 @@ func AssignExercise(c *fiber.Ctx) error {
 
 }
 
+func GetPatientSession(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	session, err := service.GetPatientExercisesService(constant.PatientExerciseSession, id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, session)
+
+}
+
 func GetPatientExercises(c *fiber.Ctx) error {
 
 	id, err := utils.ConvertToNum(c, "id")
@@ -61,22 +77,6 @@ func GetPatientExerciseDetail(c *fiber.Ctx) error {
 	}
 
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, exercise)
-
-}
-
-func GetPatientSession(c *fiber.Ctx) error {
-
-	id, err := utils.ConvertToNum(c, "id")
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	session, err := service.GetPatientExercisesService(constant.PatientExerciseSession, id)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
-
-	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchExercises, session)
 
 }
 
