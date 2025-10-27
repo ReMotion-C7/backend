@@ -2,7 +2,6 @@ package service
 
 import (
 	"ReMotion-C7/app/dto/request"
-	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/repository"
 )
 
@@ -28,11 +27,11 @@ func EditPatientExerciseService(dto request.EditPatientExerciseDto, patientId in
 
 }
 
-func GetPatientExercisesService(id int) ([]response.ExerciseForPatientDto, error) {
+func GetPatientExercisesService(mode int, id int) (interface{}, error) {
 
-	exercises, err := repository.RetrievePatientExercises(id)
+	exercises, err := repository.RetrievePatientExercises(mode, id)
 	if err != nil {
-		return []response.ExerciseForPatientDto{}, err
+		return nil, err
 	}
 
 	return exercises, nil

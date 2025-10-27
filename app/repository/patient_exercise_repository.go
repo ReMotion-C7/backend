@@ -32,7 +32,7 @@ func AddExerciseToPatient(dto request.AssignExerciseToPatientDto, patientId int)
 
 }
 
-func RetrievePatientExercises(id int) ([]response.ExerciseForPatientDto, error) {
+func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 	database := config.GetDatabase()
 
@@ -40,20 +40,36 @@ func RetrievePatientExercises(id int) ([]response.ExerciseForPatientDto, error) 
 
 	err := database.Preload("Exercise.Type").Where(`patient_id = ?`, id).Find(&patientExercises).Error
 	if err != nil {
-		return []response.ExerciseForPatientDto{}, err
+		return nil, err
 	}
 
-	var dto []response.ExerciseForPatientDto
+	if mode == constant.PatientExerciseDefault {
 
+		var dto []response.ExerciseForPatientDto
+		for _, e := range patientExercises {
+			dto = append(dto, response.ExerciseForPatientDto{
+				Id:        int(e.ExerciseID),
+				Name:      e.Exercise.Name,
+				Type:      e.Exercise.Type.Name,
+				Muscle:    e.Exercise.Muscle,
+				Image:     e.Exercise.Image,
+				Set:       e.Set,
+				RepOrTime: e.RepOrTime,
+			})
+		}
+
+		return dto, nil
+
+	}
+
+	var dto []response.PatientSessionDto
 	for _, e := range patientExercises {
-		dto = append(dto, response.ExerciseForPatientDto{
-			Id: int(e.ExerciseID),
-			Name: e.Exercise.Name,
-			Type: e.Exercise.Type.Name,
-			Description: e.Exercise.Description,
-			Muscle: e.Exercise.Muscle,
-			Image: e.Exercise.Image,
-			Video: e.Exercise.Video,
+		dto = append(dto, response.PatientSessionDto{
+			Id:        int(e.ExerciseID),
+			Name:      e.Exercise.Name,
+			Type:      e.Exercise.Type.Name,
+			Muscle:    e.Exercise.Muscle,
+			Video:     e.Exercise.Video,
 			Set:       e.Set,
 			RepOrTime: e.RepOrTime,
 		})
