@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gofiber/fiber/v2"
 )
 
 func GenerateJWT(user response.UserDto) (string, error) {
@@ -26,5 +27,28 @@ func GenerateJWT(user response.UserDto) (string, error) {
 	}
 
 	return signedToken, nil
+
+}
+
+func ParseToken(c *fiber.Ctx) (jwt.MapClaims, error) {
+
+	token := c.Get("Authorization")
+
+	claims := jwt.MapClaims{}
+
+	parsedToken, err := jwt.ParseWithClaims(token, claims, GetSecretKey)
+	if err != nil || !parsedToken.Valid {
+		return nil, err
+	}
+
+	return claims, nil
+
+}
+
+func GetSecretKey(token *jwt.Token) (interface{}, error) {
+
+	secretKey := config.LoadEnvConfig("SECRET_KEY")
+
+	return []byte(secretKey), nil
 
 }
