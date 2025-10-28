@@ -31,7 +31,6 @@ func SeedGenders(db *gorm.DB) {
 	genders := []model.Gender{
 		{Name: "Laki-laki"},
 		{Name: "Wanita"},
-		{Name: "Tidak ingin memberitahukan"},
 	}
 
 	err := db.Create(&genders).Error
