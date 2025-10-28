@@ -1,8 +1,6 @@
-PHONY: compile run migrate reset restart-migrate
-
 -include .env
 
-compile:
+build:
 	go build -o main.go
 
 run:
@@ -16,3 +14,15 @@ reset:
 
 restart-migrate:
 	cd cmd/reset && go run main.go && cd ../seeder && go run main.go
+
+compose-build:
+	docker compose up --build -d
+
+compose-down:
+	docker compose down
+
+compose-running:
+	docker ps
+
+compose-log:
+	docker-compose logs -f backend-service
