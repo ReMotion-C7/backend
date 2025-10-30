@@ -17,7 +17,7 @@ func SetUp(app *fiber.App) {
 	auth.Post("/register", controller.Register)
 
 	// EXERCISE ON FISIO ENDPOINTS
-	exerciseOnFisio := api.Group("/fisio/exercises", middleware.FisioMiddleware)
+	exerciseOnFisio := api.Group("/fisio/exercises", middleware.FisioMiddlewareWithoutId)
 	exerciseOnFisio.Post("/create", controller.CreateExercise)
 	exerciseOnFisio.Get("/", controller.GetExercises)
 	exerciseOnFisio.Get("/modal", controller.GetExercisesModal)

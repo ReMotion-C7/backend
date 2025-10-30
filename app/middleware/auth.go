@@ -22,6 +22,19 @@ func UserMiddleware(c *fiber.Ctx) error {
 
 }
 
+func FisioMiddlewareWithoutId(c *fiber.Ctx) error {
+
+	expectedRoleId := 1
+
+	_, err := GetAuthorizedUser(c, expectedRoleId)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return c.Next()
+
+}
+
 func FisioMiddleware(c *fiber.Ctx) error {
 
 	expectedRoleId := 1
