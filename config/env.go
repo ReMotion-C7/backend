@@ -4,30 +4,18 @@ import (
 	"ReMotion-C7/constant"
 	"log"
 	"os"
-	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
 
 func LoadEnv() {
 
-	envPaths := []string{
-		filepath.Join(".", ".env"),
-		filepath.Join("..", ".env"),
-		filepath.Join("..", "..", ".env"),
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalln(constant.ErrReadEnvFile)
 	}
 
-	for _, path := range envPaths {
-		if _, err := os.Stat(path); err == nil {
-			err = godotenv.Load(path)
-			if err == nil {
-				log.Println(constant.SuccessLoadEnvFile)
-				return
-			} 
-		}
-	}
-
-	log.Fatalln(constant.ErrReadEnvFile)
+	log.Println(constant.SuccessLoadEnvFile)
 
 }
 
