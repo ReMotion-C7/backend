@@ -89,43 +89,33 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 }
 
-func RetrievePatientDetailExercise(patientId int, exerciseId int) ([]response.ExerciseDetailForPatientDto, error) {
+func RetrievePatientDetailExercise(patientId int, exerciseId int) (response.ExerciseDetailForPatientDto, error) {
 
 	database := config.GetDatabase()
 
-	var patientExercises []model.PatientExercise
+	var patientExercise model.PatientExercise
 
 	err := database.Preload("Exercise.Type").
 		Where(`patient_id = ? AND exercise_id = ?`, patientId, exerciseId).
-		Find(&patientExercises).Error
+		First(&patientExercise).Error
 	if err != nil {
-		return []response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+		return response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
 	}
 
-	if len(patientExercises) == 0 {
-		return []response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
+	if patientExercise.ID == 0 {
+		return response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
 	}
 
-	var dto []response.ExerciseDetailForPatientDto
-
-	for _, e := range patientExercises {
-
-		exerciseId := int(e.ExerciseID)
-
-		dto = append(dto, response.ExerciseDetailForPatientDto{
-			Id:          exerciseId,
-			Name:        e.Exercise.Name,
-			Description: e.Exercise.Description,
-			Type:        e.Exercise.Type.Name,
-			Muscle:      e.Exercise.Muscle,
-			Video:       e.Exercise.Video,
-			Set:         e.Set,
-			RepOrTime:   e.RepOrTime,
-		})
-	}
-
-	return dto, nil
-
+	return response.ExerciseDetailForPatientDto {
+		Id: exerciseId,
+			Name:        patientExercise.Exercise.Name,
+			Description: patientExercise.Exercise.Description,
+			Type:        patientExercise.Exercise.Type.Name,
+			Muscle:      patientExercise.Exercise.Muscle,
+			Video:       patientExercise.Exercise.Video,
+			Set:         patientExercise.Set,
+			RepOrTime:   patientExercise.RepOrTime,
+		}, nil
 }
 
 func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exerciseId int) error {

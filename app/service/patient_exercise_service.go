@@ -39,11 +39,11 @@ func GetPatientExercisesService(mode int, id int) (interface{}, error) {
 
 }
 
-func GetPatientExerciseDetailService(patientId int, exerciseId int) ([]response.ExerciseDetailForPatientDto, error) {
+func GetPatientExerciseDetailService(patientId int, exerciseId int) (response.ExerciseDetailForPatientDto, error) {
 
 	exercise, err := repository.RetrievePatientDetailExercise(patientId, exerciseId)
 	if err != nil {
-		return nil, err
+		return response.ExerciseDetailForPatientDto{}, err
 	}
 
 	return exercise, nil
