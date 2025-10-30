@@ -12,7 +12,7 @@ func LoadEnv() {
 
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalln(constant.ErrReadEnvFile)
+		return
 	}
 
 	log.Println(constant.SuccessLoadEnvFile)
