@@ -4,8 +4,6 @@ import (
 	"ReMotion-C7/app/dto/request"
 	"ReMotion-C7/app/dto/response"
 	"ReMotion-C7/app/repository"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 func AddPatientService(dto request.AddPatientDto, id int) error {
@@ -30,22 +28,20 @@ func EditPatientService(dto request.EditPatientDto, fisioId int, patientId int) 
 
 }
 
-func GetPatientsService(c *fiber.Ctx, fisioId int) (interface{}, error) {
+func GetUsersService(fisioId int) ([]response.UserNonFisioDto, error) {
 
-	patientName := c.Query("name")
-
-	if patientName == "" {
-
-		patients, err := repository.RetrievePatients(fisioId)
-		if err != nil {
-			return nil, err
-		}
-
-		return patients, nil
-
+	users, err := repository.RetrieveUsers(fisioId)
+	if err != nil {
+		return []response.UserNonFisioDto{}, err
 	}
 
-	patients, err := repository.FindUserByName(patientName)
+	return users, nil
+
+}
+
+func GetPatientsService(fisioId int) ([]response.PatientDto, error) {
+
+	patients, err := repository.RetrievePatients(fisioId)
 	if err != nil {
 		return nil, err
 	}

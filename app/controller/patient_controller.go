@@ -54,6 +54,22 @@ func EditPatient(c *fiber.Ctx) error {
 
 }
 
+func GetUsers(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	users, err := service.GetUsersService(id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchUsers, users)
+
+}
+
 func GetPatients(c *fiber.Ctx) error {
 
 	id, err := utils.ConvertToNum(c, "id")
@@ -61,10 +77,11 @@ func GetPatients(c *fiber.Ctx) error {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
 
-	patients, err := service.GetPatientsService(c, id)
+	patients, err := service.GetPatientsService(id)
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
+
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, patients)
 
 }
@@ -80,6 +97,7 @@ func GetPatientPhase(c *fiber.Ctx) error {
 	if err != nil {
 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
 	}
+
 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, phase)
 
 }

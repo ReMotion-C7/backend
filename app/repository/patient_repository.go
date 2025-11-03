@@ -7,7 +7,6 @@ import (
 	"ReMotion-C7/config"
 	"ReMotion-C7/constant"
 	"fmt"
-	"strings"
 	"time"
 )
 
@@ -117,29 +116,22 @@ func RetrievePatients(id int) ([]response.PatientDto, error) {
 
 }
 
-func FindUserByName(name string) ([]response.SearchPatientDto, error) {
+func RetrieveUsers(fisioId int) ([]response.UserNonFisioDto, error) {
 
 	database := config.GetDatabase()
-	var users []model.User
+	var patients []model.Patient
 
-	name = strings.TrimSpace(name)
-
-	err := database.Where("name ILIKE ? AND role_id = 2", "%"+name+"%").
-		Find(&users).Error
+	err := database.Preload("PatientUser").Where("fisiotherapy_id <> ?", fisioId).Find(&patients).Error
 	if err != nil {
-		return nil, err
+		return []response.UserNonFisioDto{}, err
 	}
 
-	if len(users) == 0 {
-		return nil, fmt.Errorf(constant.ErrPatientNotFound)
-	}
-
-	var dto []response.SearchPatientDto
-	for _, p := range users {
-		dto = append(dto, response.SearchPatientDto{
+	var dto []response.UserNonFisioDto
+	for _, p := range patients {
+		dto = append(dto, response.UserNonFisioDto{
 			Id:          int(p.ID),
-			Name:        p.Name,
-			PhoneNumber: p.PhoneNumber,
+			Name:        p.PatientUser.Name,
+			PhoneNumber: p.PatientUser.PhoneNumber,
 		})
 	}
 

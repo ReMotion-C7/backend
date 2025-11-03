@@ -21,7 +21,7 @@ type PatientDetailDto struct {
 	PatientExerciseForFisioDto []PatientExerciseForFisioDto `json:"exercises"`
 }
 
-type SearchPatientDto struct {
+type UserNonFisioDto struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	PhoneNumber string `json:"phoneNumber"`
