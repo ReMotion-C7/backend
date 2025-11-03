@@ -119,19 +119,27 @@ func RetrievePatients(id int) ([]response.PatientDto, error) {
 func RetrieveUsers(fisioId int) ([]response.UserNonFisioDto, error) {
 
 	database := config.GetDatabase()
-	var patients []model.Patient
 
-	err := database.Preload("PatientUser").Where("fisiotherapy_id <> ?", fisioId).Find(&patients).Error
+	subquery := database.
+		Table("patients").
+		Select("user_id").
+		Where("fisiotherapy_id = ?", fisioId)
+
+	var users []model.User
+	err := database.
+		Where("role_id = ?", 2).
+		Where("id NOT IN (?)", subquery).
+		Find(&users).Error
 	if err != nil {
-		return []response.UserNonFisioDto{}, err
+		return nil, err
 	}
 
 	var dto []response.UserNonFisioDto
-	for _, p := range patients {
+	for _, u := range users {
 		dto = append(dto, response.UserNonFisioDto{
-			Id:          int(p.ID),
-			Name:        p.PatientUser.Name,
-			PhoneNumber: p.PatientUser.PhoneNumber,
+			Id:          int(u.ID),
+			Name:        u.Name,
+			PhoneNumber: u.PhoneNumber,
 		})
 	}
 
