@@ -15,7 +15,7 @@ func UserMiddleware(c *fiber.Ctx) error {
 
 	_, err := GetAuthorizedUser(c, expectedRoleId)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusUnauthorized, err.Error(), nil)
 	}
 
 	return c.Next()
@@ -28,7 +28,7 @@ func FisioMiddlewareWithoutId(c *fiber.Ctx) error {
 
 	_, err := GetAuthorizedUser(c, expectedRoleId)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusUnauthorized, err.Error(), nil)
 	}
 
 	return c.Next()
@@ -46,11 +46,11 @@ func FisioMiddleware(c *fiber.Ctx) error {
 
 	userId, err := GetAuthorizedUser(c, expectedRoleId)
 	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusUnauthorized, err.Error(), nil)
 	}
 
 	if fisioId != userId {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, constant.ErrInvalidFisio, nil)
+		return output.GetOutput(c, constant.StatusError, fiber.StatusUnauthorized, constant.ErrInvalidFisio, nil)
 	}
 
 	return c.Next()
