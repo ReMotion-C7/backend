@@ -11,5 +11,5 @@ type UserDto struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
 	RoleId    int    `json:"roleId"`
-	PatientId *int   `json:"patientId,omitempty"`
+	PatientId int    `json:"patientId"`
 }
