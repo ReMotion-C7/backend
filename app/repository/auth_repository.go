@@ -8,17 +8,24 @@ import (
 	"time"
 )
 
-func FindUserByIdentifier(value string) (model.User, error) {
+func FindUserByIdentifier(value string) (model.User, int, error) {
 
 	database := config.GetDatabase()
 	var user model.User
 
 	err := database.Where(`email = ? OR phone_number = ?`, value, value).First(&user).Error
 	if err != nil {
-		return model.User{}, err
+		return model.User{}, 0, err
 	}
 
-	return user, nil
+	var patientId int
+
+	err = database.Model(&model.Patient{}).Select(`id`).Where(`user_id = ?`, user.ID).Scan(&patientId).Error
+	if err != nil {
+		return user, 0, nil
+	}
+
+	return user, patientId, nil
 
 }
 

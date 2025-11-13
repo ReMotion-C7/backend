@@ -11,7 +11,7 @@ import (
 
 func LoginService(dto request.LoginDto) (response.UserDto, error) {
 
-	user, err := repository.FindUserByIdentifier(dto.Identifier)
+	user, patientId, err := repository.FindUserByIdentifier(dto.Identifier)
 	if err != nil {
 		return response.UserDto{}, err
 	}
@@ -22,9 +22,10 @@ func LoginService(dto request.LoginDto) (response.UserDto, error) {
 	}
 
 	userDto := response.UserDto{
-		Id:     int(user.ID),
-		Name:   user.Name,
-		RoleId: int(*user.RoleID),
+		Id:        int(user.ID),
+		Name:      user.Name,
+		RoleId:    int(*user.RoleID),
+		PatientId: &patientId,
 	}
 
 	return userDto, nil
@@ -33,7 +34,7 @@ func LoginService(dto request.LoginDto) (response.UserDto, error) {
 
 func RegisterService(dto request.RegisterDto) (response.UserDto, error) {
 
-	_, err := repository.FindUserByIdentifier(dto.Email)
+	_, patientId, err := repository.FindUserByIdentifier(dto.Email)
 	if err == nil {
 		return response.UserDto{}, fmt.Errorf(constant.ErrEmailAlreadyRegistered)
 	}
@@ -44,9 +45,10 @@ func RegisterService(dto request.RegisterDto) (response.UserDto, error) {
 	}
 
 	userDto := response.UserDto{
-		Id:     int(user.ID),
-		Name:   user.Name,
-		RoleId: int(*user.RoleID),
+		Id:        int(user.ID),
+		Name:      user.Name,
+		RoleId:    int(*user.RoleID),
+		PatientId: &patientId,
 	}
 
 	return userDto, nil
