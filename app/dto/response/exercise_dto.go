@@ -4,23 +4,26 @@ type ExerciseDto struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
+	Category    string `json:"category"`
 	Description string `json:"description"`
 	Muscle      string `json:"muscle"`
 	Image       string `json:"image"`
 }
 
 type ExerciseModalDto struct {
-	Id     int    `json:"id"`
-	Name   string `json:"name"`
-	Type   string `json:"type"`
-	Muscle string `json:"muscle"`
-	Image  string `json:"image"`
+	Id       int    `json:"id"`
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	Category string `json:"category"`
+	Muscle   string `json:"muscle"`
+	Image    string `json:"image"`
 }
 
 type ExerciseDetailForFisioDto struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
 	Type        string `json:"type"`
+	Category    string `json:"category"`
 	Description string `json:"description"`
 	Muscle      string `json:"muscle"`
 	Video       string `json:"video"`

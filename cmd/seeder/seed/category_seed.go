@@ -8,14 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func SeedTypes(db *gorm.DB) {
+func SeedCategories(db *gorm.DB) {
 
-	types := []model.Type{
-		{Name: "AGA"},
-		{Name: "AGB"},
+	categories := []model.Category{
+		{Name: "Keseimbangan"},
+		{Name: "Penguatan"},
 	}
 
-	err := db.Create(&types).Error
+	err := db.Create(&categories).Error
 	if err != nil {
 		log.Fatalf(constant.ErrSeedingDatabase)
 	}

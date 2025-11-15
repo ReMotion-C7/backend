@@ -31,20 +31,18 @@ func CreateExerciseService(c *fiber.Ctx, dto request.CreateEditExerciseDto) erro
 
 func GetExercisesService(c *fiber.Ctx, mode int) (interface{}, error) {
 
-	name := c.Query("name")
+	// name := c.Query("name")
 
-	if name == "" {
+	// if name == "" {
 
-		exercises, err := repository.RetrieveExercises(mode)
-		if err != nil {
-			return nil, err
-		}
+	// }
 
-		return exercises, nil
+	// exercises, err := repository.FindExercisesByName(mode, name)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	}
-
-	exercises, err := repository.FindExercisesByName(mode, name)
+	exercises, err := repository.RetrieveExercises(mode)
 	if err != nil {
 		return nil, err
 	}

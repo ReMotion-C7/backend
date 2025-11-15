@@ -12,6 +12,7 @@ func ClearDatabase(db *gorm.DB) {
 
 	tables := []interface{}{
 		&model.PatientExercise{},
+		&model.Progress{},
 		&model.Symptom{},
 		&model.Patient{},
 		&model.Exercise{},
@@ -19,6 +20,9 @@ func ClearDatabase(db *gorm.DB) {
 		&model.Type{},
 		&model.Gender{},
 		&model.Role{},
+		&model.Category{},
+		&model.Phase{},
+		&model.Method{},
 	}
 
 	for _, table := range tables {

@@ -3,6 +3,7 @@ package seed
 import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/constant"
+	"ReMotion-C7/utils"
 	"log"
 	"math/rand/v2"
 	"time"
@@ -38,7 +39,8 @@ func SeedPatients(db *gorm.DB) {
 		}
 
 		patient := model.Patient{
-			Phase:            (rand.IntN(2) + 1),
+			Diagnostic:       faker.Paragraph(),
+			PhaseID:          utils.PointNumber(rand.IntN(6) + 1),
 			TherapyStartDate: date,
 			UserID:           uint(i + 3),
 			FisiotherapyID:   fisioId,

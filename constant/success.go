@@ -22,4 +22,6 @@ var (
 	SuccessDeletePatientExercise = "successfully delete patient's exercise."
 	SuccessFetchPatientPhase     = "successfully fetch patient's phase"
 	SuccessFetchUsers            = "successfully fetch all user non fisio."
+	SuccessAddProgress           = "successfully add progress"
+	SuccessFetchProgresses       = "successfully fetch patient's progress"
 )

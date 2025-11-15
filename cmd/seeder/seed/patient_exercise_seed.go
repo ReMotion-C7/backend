@@ -3,6 +3,7 @@ package seed
 import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/constant"
+	"ReMotion-C7/utils"
 	"log"
 	"math/rand/v2"
 
@@ -31,6 +32,7 @@ func SeedPatientExercises(db *gorm.DB) {
 		for _, e := range exercises {
 
 			patientExercise := model.PatientExercise{
+				MethodID:   utils.PointNumber(rand.IntN(2) + 1),
 				Set:        (rand.IntN(3) + 1),
 				RepOrTime:  (rand.IntN(3) + 1) * 10,
 				PatientID:  patient.ID,

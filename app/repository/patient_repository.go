@@ -6,6 +6,7 @@ import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
 	"ReMotion-C7/constant"
+	"ReMotion-C7/utils"
 	"fmt"
 	"time"
 )
@@ -22,7 +23,8 @@ func AddPatient(dto request.AddPatientDto, id int) error {
 	patient := model.Patient{
 		UserID:           uint(dto.UserId),
 		TherapyStartDate: therapyStartDate,
-		Phase:            dto.Phase,
+		Diagnostic:       dto.Diagnostic,
+		PhaseID:          utils.PointNumber(dto.PhaseId),
 		FisiotherapyID:   uint(id),
 	}
 
@@ -49,6 +51,28 @@ func AddPatient(dto request.AddPatientDto, id int) error {
 
 	return nil
 
+}
+
+func AddProgress(dto request.AddProgressDto, id int) error {
+
+	database := config.GetDatabase()
+
+	progressDate, err := time.Parse("2006-01-02", dto.Date)
+	if err != nil {
+		return err
+	}
+
+	progress := model.Progress{
+		PatientID: uint(id),
+		Date:      progressDate,
+	}
+
+	err = database.Create(&progress).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
@@ -92,9 +116,14 @@ func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
 func RetrievePatients(id int) ([]response.PatientDto, error) {
 
 	database := config.GetDatabase()
+
 	var patients []model.Patient
 
-	err := database.Preload("PatientUser").Where(`fisiotherapy_id = ?`, id).Find(&patients).Error
+	err := database.Preload("Phase").
+		Preload("PatientUser").
+		Where(`fisiotherapy_id = ?`, id).
+		Find(&patients).Error
+
 	if err != nil {
 		return []response.PatientDto{}, err
 	}
@@ -106,9 +135,33 @@ func RetrievePatients(id int) ([]response.PatientDto, error) {
 			Id:               int(p.ID),
 			Name:             p.PatientUser.Name,
 			PhoneNumber:      p.PatientUser.PhoneNumber,
-			Phase:            p.Phase,
+			Phase:            p.Phase.Name,
 			DateOfBirth:      p.PatientUser.DateOfBirth.Format("2006-01-02"),
 			TherapyStartDate: p.TherapyStartDate.Format("2006-01-02"),
+		})
+	}
+
+	return dto, nil
+
+}
+
+func RetrievePatientProgresses(patientId int) ([]response.ProgressDto, error) {
+
+	database := config.GetDatabase()
+
+	var progresses []model.Progress
+
+	err := database.Where(`patient_id = ?`, patientId).Find(&progresses).Error
+	if err != nil {
+		return []response.ProgressDto{}, err
+	}
+
+	var dto []response.ProgressDto
+
+	for _, p := range progresses {
+		dto = append(dto, response.ProgressDto{
+			Id: int(p.ID),
+			Date: p.Date.Format("2006-01-02"),
 		})
 	}
 
@@ -162,20 +215,20 @@ func FindPatientById(fisioId int, patientId int) error {
 
 }
 
-func FindPatientPhaseById(patientId int) (int, error) {
+// func FindPatientPhaseById(patientId int) (int, error) {
 
-	database := config.GetDatabase()
+// 	database := config.GetDatabase()
 
-	var patient model.Patient
+// 	var patient model.Patient
 
-	err := database.Where(`id = ?`, patientId).First(&patient).Error
-	if err != nil {
-		return 0, fmt.Errorf(constant.ErrPatientNotFound)
-	}
+// 	err := database.Where(`id = ?`, patientId).First(&patient).Error
+// 	if err != nil {
+// 		return 0, fmt.Errorf(constant.ErrPatientNotFound)
+// 	}
 
-	return patient.Phase, nil
+// 	return patient.Phase, nil
 
-}
+// }
 
 func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, error) {
 
@@ -183,12 +236,15 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 	var patient model.Patient
 
 	err := database.
+		Preload("PatientExercises.Method").
+		Preload("PatientExercises.Exercise").
 		Preload("PatientUser.Gender").
 		Preload("FisiotherapyUser").
-		Preload("FisiotherapyUser").
 		Preload("Symptoms").
-		Preload("PatientExercises.Exercise.Type").
+		Preload("Phase").
+		Preload("Progresses").
 		Where("id = ? AND fisiotherapy_id = ?", patientId, fisioId).Find(&patient).Error
+
 	if err != nil {
 		return response.PatientDetailDto{}, err
 	}
@@ -202,15 +258,15 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 		symptomNames = append(symptomNames, s.Name)
 	}
 
-	var dto []response.PatientExerciseForFisioDto
+	var exercisesDto []response.PatientExerciseForFisioDto
 	for _, e := range patient.PatientExercises {
 
 		exerciseId := int(e.ExerciseID)
 
-		dto = append(dto, response.PatientExerciseForFisioDto{
+		exercisesDto = append(exercisesDto, response.PatientExerciseForFisioDto{
 			Id:          exerciseId,
 			Name:        e.Exercise.Name,
-			Type:        e.Exercise.Type.Name,
+			Method:      e.Method.Name,
 			Image:       e.Exercise.Image,
 			Muscle:      e.Exercise.Muscle,
 			Description: e.Exercise.Description,
@@ -219,16 +275,27 @@ func FindPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, e
 		})
 	}
 
+	var progressesDto []response.ProgressDto
+	for _, p := range patient.Progresses {
+
+		progressesDto = append(progressesDto, response.ProgressDto{
+			Id:   int(p.ID),
+			Date: p.Date.Format("2006-01-02"),
+		})
+	}
+
 	return response.PatientDetailDto{
 		Id:                         int(patient.ID),
 		Name:                       patient.PatientUser.Name,
 		Gender:                     patient.PatientUser.Gender.Name,
 		PhoneNumber:                patient.PatientUser.PhoneNumber,
-		Phase:                      patient.Phase,
+		Phase:                      patient.Phase.Name,
+		Diagnostic:                 patient.Diagnostic,
 		DateOfBirth:                patient.PatientUser.DateOfBirth.Format("2006-01-02"),
 		TherapyStartDate:           patient.TherapyStartDate.Format("2006-01-02"),
 		Symptoms:                   symptomNames,
-		PatientExerciseForFisioDto: dto,
+		PatientExerciseForFisioDto: exercisesDto,
+		ProgressDto:                progressesDto,
 	}, nil
 
 }

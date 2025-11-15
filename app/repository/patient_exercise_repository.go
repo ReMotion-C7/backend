@@ -6,6 +6,7 @@ import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/config"
 	"ReMotion-C7/constant"
+	"ReMotion-C7/utils"
 	"errors"
 	"fmt"
 
@@ -22,6 +23,7 @@ func AddExerciseToPatient(dto request.AssignExerciseToPatientDto, id int) error 
 	patientExercise := model.PatientExercise{
 		PatientID:  patientId,
 		ExerciseID: exerciseId,
+		MethodID:   utils.PointNumber(dto.MethodId),
 		Set:        dto.Set,
 		RepOrTime:  dto.RepOrTime,
 	}
@@ -41,7 +43,8 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 	var patientExercises []model.PatientExercise
 
-	err := database.Preload("Exercise.Type").Where(`patient_id = ?`, id).Find(&patientExercises).Error
+	err := database.Preload("Method").Where(`patient_id = ?`, id).Find(&patientExercises).Error
+
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +59,7 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 			dto = append(dto, response.ExerciseForPatientDto{
 				Id:        exerciseId,
 				Name:      e.Exercise.Name,
-				Type:      e.Exercise.Type.Name,
+				Method:    e.Method.Name,
 				Muscle:    e.Exercise.Muscle,
 				Video:     e.Exercise.Video,
 				Set:       e.Set,
@@ -77,7 +80,7 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 		dto = append(dto, response.PatientSessionDto{
 			Id:        exerciseId,
 			Name:      e.Exercise.Name,
-			Type:      e.Exercise.Type.Name,
+			Method:    e.Method.Name,
 			Muscle:    e.Exercise.Muscle,
 			Image:     e.Exercise.Image,
 			Set:       e.Set,
@@ -95,7 +98,7 @@ func RetrievePatientDetailExercise(patientId int, exerciseId int) (response.Exer
 
 	var patientExercise model.PatientExercise
 
-	err := database.Preload("Exercise.Type").
+	err := database.Preload("Method").
 		Where(`patient_id = ? AND exercise_id = ?`, patientId, exerciseId).
 		First(&patientExercise).Error
 	if err != nil {
@@ -106,16 +109,16 @@ func RetrievePatientDetailExercise(patientId int, exerciseId int) (response.Exer
 		return response.ExerciseDetailForPatientDto{}, fmt.Errorf(constant.ErrExerciseNotFound)
 	}
 
-	return response.ExerciseDetailForPatientDto {
-		Id: exerciseId,
-			Name:        patientExercise.Exercise.Name,
-			Description: patientExercise.Exercise.Description,
-			Type:        patientExercise.Exercise.Type.Name,
-			Muscle:      patientExercise.Exercise.Muscle,
-			Video:       patientExercise.Exercise.Video,
-			Set:         patientExercise.Set,
-			RepOrTime:   patientExercise.RepOrTime,
-		}, nil
+	return response.ExerciseDetailForPatientDto{
+		Id:          exerciseId,
+		Name:        patientExercise.Exercise.Name,
+		Description: patientExercise.Exercise.Description,
+		Method:      patientExercise.Method.Name,
+		Muscle:      patientExercise.Exercise.Muscle,
+		Video:       patientExercise.Exercise.Video,
+		Set:         patientExercise.Set,
+		RepOrTime:   patientExercise.RepOrTime,
+	}, nil
 }
 
 func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exerciseId int) error {

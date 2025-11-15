@@ -47,8 +47,6 @@ func SeedUsers(db *gorm.DB) {
 			roleID = 2
 		}
 
-		genderId := uint(rand.IntN(2) + 1)
-
 		user := model.User{
 			Name:        faker.Name(),
 			Email:       faker.Email(),
@@ -56,7 +54,7 @@ func SeedUsers(db *gorm.DB) {
 			PhoneNumber: faker.Phonenumber(),
 			DateOfBirth: date,
 			RoleID:      &roleID,
-			GenderID:    &genderId,
+			GenderID:    utils.PointNumber(rand.IntN(2) + 1),
 		}
 
 		users = append(users, user)

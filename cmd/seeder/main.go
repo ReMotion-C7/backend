@@ -27,12 +27,16 @@ func main() {
 
 	fmt.Println(Blue + "🚀 Starting database migration and seeding..." + Reset)
 
+	autoMigrateAndSeed(database, &model.Category{}, "Category", func() { seed.SeedCategories(database) })
+	autoMigrateAndSeed(database, &model.Method{}, "Method", func() { seed.SeedMethods(database) })
+	autoMigrateAndSeed(database, &model.Phase{}, "Phase", func() { seed.SeedPhases(database) })
 	autoMigrateAndSeed(database, &model.Role{}, "Role", func() { seed.SeedRoles(database) })
 	autoMigrateAndSeed(database, &model.Gender{}, "Gender", func() { seed.SeedGenders(database) })
 	autoMigrateAndSeed(database, &model.Type{}, "Type", func() { seed.SeedTypes(database) })
 	autoMigrateAndSeed(database, &model.User{}, "User", func() { seed.SeedUsers(database) })
 	autoMigrateAndSeed(database, &model.Exercise{}, "Exercise", func() { seed.SeedExercises(database) })
 	autoMigrateAndSeed(database, &model.Patient{}, "Patient", func() { seed.SeedPatients(database) })
+	autoMigrateAndSeed(database, &model.Progress{}, "Progress", func() { seed.SeedProgress(database) })
 	autoMigrateAndSeed(database, &model.Symptom{}, "Symptom", func() { seed.SeedSymptoms(database) })
 	autoMigrateAndSeed(database, &model.PatientExercise{}, "PatientExercise", func() { seed.SeedPatientExercises(database) })
 

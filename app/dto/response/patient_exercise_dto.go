@@ -3,7 +3,7 @@ package response
 type PatientExerciseForFisioDto struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
-	Type        string `json:"type"`
+	Method      string `json:"method"`
 	Description string `json:"description"`
 	Image       string `json:"image"`
 	Muscle      string `json:"muscle"`
@@ -14,7 +14,7 @@ type PatientExerciseForFisioDto struct {
 type ExerciseForPatientDto struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
-	Type      string `json:"type"`
+	Method    string `json:"method"`
 	Video     string `json:"video"`
 	Muscle    string `json:"muscle"`
 	Set       int    `json:"set"`
@@ -24,7 +24,7 @@ type ExerciseForPatientDto struct {
 type ExerciseDetailForPatientDto struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
-	Type        string `json:"type"`
+	Method      string `json:"method"`
 	Description string `json:"description"`
 	Video       string `json:"video"`
 	Muscle      string `json:"muscle"`
@@ -35,7 +35,7 @@ type ExerciseDetailForPatientDto struct {
 type PatientSessionDto struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
-	Type      string `json:"type"`
+	Method    string `json:"method"`
 	Image     string `json:"image"`
 	Muscle    string `json:"muscle"`
 	Set       int    `json:"set"`

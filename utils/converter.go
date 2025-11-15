@@ -7,6 +7,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func PointNumber(num int) *uint {
+	v := uint(num)
+	return &v
+}
+
 func ConvertToNum(c *fiber.Ctx, idStr string) (int, error) {
 
 	id := c.Params(idStr)

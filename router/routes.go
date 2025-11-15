@@ -18,7 +18,6 @@ func SetUp(app *fiber.App) {
 
 	// EXERCISE ON FISIO ENDPOINTS
 	exerciseOnFisio := api.Group("/fisio/exercises", middleware.FisioMiddlewareWithoutId)
-	exerciseOnFisio.Post("/create", controller.CreateExercise)
 	exerciseOnFisio.Get("/", controller.GetExercises)
 	exerciseOnFisio.Get("/modal", controller.GetExercisesModal)
 	exerciseOnFisio.Get("/:id", controller.GetExerciseDetail)
@@ -33,6 +32,7 @@ func SetUp(app *fiber.App) {
 	patientOnFisio.Get("/:patient_id", middleware.PatientOwnership, controller.GetPatientDetail)
 
 	// PATIENT'S EXERCISE ON FISIO ENPOINTS
+	// https://backend-production-7825.up.railway.app/api
 	patientsExerciseOnFisio := patientOnFisio.Group("/:patient_id/exercises", middleware.PatientOwnership)
 	patientsExerciseOnFisio.Post("/assign", controller.AssignExercise)
 	patientsExerciseOnFisio.Patch("/edit/:exercise_id", controller.EditPatientExercise)
@@ -43,6 +43,7 @@ func SetUp(app *fiber.App) {
 	patientsDetail.Get("/sessions", controller.GetPatientSession)
 	patientsDetail.Get("/sessions/exercises", controller.GetPatientExercises)
 	patientsDetail.Get("/sessions/exercises/:exercise_id", controller.GetPatientExerciseDetail)
-	patientsDetail.Get("/phase", controller.GetPatientPhase)
+	patientsDetail.Get("/progresses", controller.GetPatientProgresses)
+	patientsDetail.Post("/progresses/add", controller.AddProgress)
 
 }

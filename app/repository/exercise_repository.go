@@ -7,7 +7,6 @@ import (
 	"ReMotion-C7/config"
 	"ReMotion-C7/constant"
 	"fmt"
-	"strings"
 )
 
 func AddExercise(dto request.CreateEditExerciseDto, imageUrl string, videoUrl string) error {
@@ -40,7 +39,7 @@ func RetrieveExercises(mode int) (interface{}, error) {
 
 	var exercises []model.Exercise
 
-	err := database.Preload("Type").Find(&exercises).Error
+	err := database.Preload("Type").Preload("Category").Find(&exercises).Error
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +52,7 @@ func RetrieveExercises(mode int) (interface{}, error) {
 				Id:          int(e.ID),
 				Name:        e.Name,
 				Type:        e.Type.Name,
+				Category:    e.Category.Name,
 				Description: e.Description,
 				Muscle:      e.Muscle,
 				Image:       e.Image,
@@ -65,66 +65,67 @@ func RetrieveExercises(mode int) (interface{}, error) {
 	var dto []response.ExerciseModalDto
 	for _, e := range exercises {
 		dto = append(dto, response.ExerciseModalDto{
-			Id:     int(e.ID),
-			Name:   e.Name,
-			Type:   e.Type.Name,
-			Muscle: e.Muscle,
-			Image:  e.Image,
+			Id:       int(e.ID),
+			Name:     e.Name,
+			Type:     e.Type.Name,
+			Category: e.Category.Name,
+			Muscle:   e.Muscle,
+			Image:    e.Image,
 		})
 	}
 	return dto, nil
 
 }
 
-func FindExercisesByName(mode int, name string) (interface{}, error) {
+// func FindExercisesByName(mode int, name string) (interface{}, error) {
 
-	database := config.GetDatabase()
+// 	database := config.GetDatabase()
 
-	var exercises []model.Exercise
+// 	var exercises []model.Exercise
 
-	exerciseName := strings.TrimSpace(name)
+// 	exerciseName := strings.TrimSpace(name)
 
-	err := database.Preload("Type").
-		Where("name ILIKE ?", "%"+exerciseName+"%").
-		Find(&exercises).Error
-	if err != nil {
-		return nil, err
-	}
+// 	err := database.Preload("Type").
+// 		Where("name ILIKE ?", "%"+exerciseName+"%").
+// 		Find(&exercises).Error
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	if len(exercises) == 0 {
-		return nil, fmt.Errorf(constant.ErrExerciseNotFound)
-	}
+// 	if len(exercises) == 0 {
+// 		return nil, fmt.Errorf(constant.ErrExerciseNotFound)
+// 	}
 
-	if mode == constant.ExerciseDefault {
+// 	if mode == constant.ExerciseDefault {
 
-		var dto []response.ExerciseDto
-		for _, e := range exercises {
-			dto = append(dto, response.ExerciseDto{
-				Id:          int(e.ID),
-				Name:        e.Name,
-				Type:        e.Type.Name,
-				Description: e.Description,
-				Muscle:      e.Muscle,
-				Image:       e.Image,
-			})
-		}
-		return dto, nil
+// 		var dto []response.ExerciseDto
+// 		for _, e := range exercises {
+// 			dto = append(dto, response.ExerciseDto{
+// 				Id:          int(e.ID),
+// 				Name:        e.Name,
+// 				Type:        e.Type.Name,
+// 				Description: e.Description,
+// 				Muscle:      e.Muscle,
+// 				Image:       e.Image,
+// 			})
+// 		}
+// 		return dto, nil
 
-	}
+// 	}
 
-	var dto []response.ExerciseModalDto
-	for _, e := range exercises {
-		dto = append(dto, response.ExerciseModalDto{
-			Id:     int(e.ID),
-			Name:   e.Name,
-			Type:   e.Type.Name,
-			Muscle: e.Muscle,
-			Image:  e.Image,
-		})
-	}
-	return dto, nil
+// 	var dto []response.ExerciseModalDto
+// 	for _, e := range exercises {
+// 		dto = append(dto, response.ExerciseModalDto{
+// 			Id:     int(e.ID),
+// 			Name:   e.Name,
+// 			Type:   e.Type.Name,
+// 			Muscle: e.Muscle,
+// 			Image:  e.Image,
+// 		})
+// 	}
+// 	return dto, nil
 
-}
+// }
 
 func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 
@@ -132,7 +133,7 @@ func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 
 	var exercise model.Exercise
 
-	err := database.Preload("Type").Where("id = ?", id).Find(&exercise).Error
+	err := database.Preload("Type").Preload("Category").Where("id = ?", id).Find(&exercise).Error
 	if err != nil {
 		return response.ExerciseDetailForFisioDto{}, err
 	}
@@ -145,6 +146,7 @@ func FindExercise(id int) (response.ExerciseDetailForFisioDto, error) {
 		Id:          int(exercise.ID),
 		Name:        exercise.Name,
 		Type:        exercise.Type.Name,
+		Category:    exercise.Category.Name,
 		Description: exercise.Description,
 		Muscle:      exercise.Muscle,
 		Video:       exercise.Video,

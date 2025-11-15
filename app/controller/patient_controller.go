@@ -32,6 +32,28 @@ func AddPatient(c *fiber.Ctx) error {
 
 }
 
+func AddProgress(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	var dto request.AddProgressDto
+	err = ParseAndValidateBody(c, &dto)
+	if err != nil {
+		return err
+	}
+
+	err = service.AddProgressService(dto, id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessAddProgress, nil)
+
+}
+
 func EditPatient(c *fiber.Ctx) error {
 
 	fisioId, patientId, err := utils.ConvertToNum2Var(c, "id", "patient_id")
@@ -70,6 +92,22 @@ func GetUsers(c *fiber.Ctx) error {
 
 }
 
+func GetPatientProgresses(c *fiber.Ctx) error {
+
+	id, err := utils.ConvertToNum(c, "id")
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	progresses, err := service.GetPatientProgressesService(id)
+	if err != nil {
+		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+	}
+
+	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchProgresses, progresses)
+
+}
+
 func GetPatients(c *fiber.Ctx) error {
 
 	id, err := utils.ConvertToNum(c, "id")
@@ -86,21 +124,21 @@ func GetPatients(c *fiber.Ctx) error {
 
 }
 
-func GetPatientPhase(c *fiber.Ctx) error {
+// func GetPatientPhase(c *fiber.Ctx) error {
 
-	id, err := utils.ConvertToNum(c, "id")
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
+// 	id, err := utils.ConvertToNum(c, "id")
+// 	if err != nil {
+// 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+// 	}
 
-	phase, err := service.GetPatientPhaseService(id)
-	if err != nil {
-		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
-	}
+// 	phase, err := service.GetPatientPhaseService(id)
+// 	if err != nil {
+// 		return output.GetOutput(c, constant.StatusError, fiber.StatusInternalServerError, err.Error(), nil)
+// 	}
 
-	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, phase)
+// 	return output.GetOutput(c, constant.StatusSuccess, fiber.StatusOK, constant.SuccessFetchPatients, phase)
 
-}
+// }
 
 func GetPatientDetail(c *fiber.Ctx) error {
 

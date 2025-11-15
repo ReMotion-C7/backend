@@ -17,6 +17,17 @@ func AddPatientService(dto request.AddPatientDto, id int) error {
 
 }
 
+func AddProgressService(dto request.AddProgressDto, id int) error {
+
+	err := repository.AddProgress(dto, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
 func EditPatientService(dto request.EditPatientDto, fisioId int, patientId int) error {
 
 	err := repository.EditPatient(dto, fisioId, patientId)
@@ -50,16 +61,27 @@ func GetPatientsService(fisioId int) ([]response.PatientDto, error) {
 
 }
 
-func GetPatientPhaseService(patientId int) (int, error) {
+func GetPatientProgressesService(patientId int) ([]response.ProgressDto, error) {
 
-	phase, err := repository.FindPatientPhaseById(patientId)
+	progresses, err := repository.RetrievePatientProgresses(patientId)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return phase, nil
+	return progresses, nil
 
 }
+
+// func GetPatientPhaseService(patientId int) (int, error) {
+
+// 	phase, err := repository.FindPatientPhaseById(patientId)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// 	return phase, nil
+
+// }
 
 func GetPatientDetail(fisioId int, patientId int) (response.PatientDetailDto, error) {
 
