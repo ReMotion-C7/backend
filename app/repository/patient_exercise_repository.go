@@ -43,7 +43,9 @@ func RetrievePatientExercises(mode int, id int) (interface{}, error) {
 
 	var patientExercises []model.PatientExercise
 
-	err := database.Preload("Method").Where(`patient_id = ?`, id).Find(&patientExercises).Error
+	err := database.Preload("Method").
+		Preload("Exercise").
+		Where(`patient_id = ?`, id).Find(&patientExercises).Error
 
 	if err != nil {
 		return nil, err
@@ -99,6 +101,7 @@ func RetrievePatientDetailExercise(patientId int, exerciseId int) (response.Exer
 	var patientExercise model.PatientExercise
 
 	err := database.Preload("Method").
+		Preload("Exercise").
 		Where(`patient_id = ? AND exercise_id = ?`, patientId, exerciseId).
 		First(&patientExercise).Error
 	if err != nil {
