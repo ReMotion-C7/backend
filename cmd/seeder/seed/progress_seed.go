@@ -6,34 +6,32 @@ import (
 	"log"
 	"time"
 
-	"github.com/bxcodec/faker/v3"
 	"gorm.io/gorm"
 )
 
 func SeedProgress(db *gorm.DB) {
 
-	var progresses []model.Progress
+    var progresses []model.Progress
 
-	for i := 0; i < 4; i++ {
+    dates := []time.Time{
+        time.Date(2025, 11, 17, 0, 0, 0, 0, time.UTC),
+        time.Date(2025, 11, 15, 0, 0, 0, 0, time.UTC),
+        time.Date(2025, 11, 13, 0, 0, 0, 0, time.UTC),
+    }
 
-		date := faker.Date()
-		parsedDate, err := time.Parse("2006-01-02", date)
-		if err != nil {
-			log.Fatalf(constant.ErrSeedingDatabase)
-		}
+    for patientID := 1; patientID <= 4; patientID++ {
+        for j := 0; j < 3; j++ {
+            progress := model.Progress{
+                Date:      dates[j],
+                PatientID: uint(patientID),
+            }
 
-		progress := model.Progress{
-			Date:      parsedDate,
-			PatientID: uint(i + 1),
-		}
+            progresses = append(progresses, progress)
+        }
+    }
 
-		progresses = append(progresses, progress)
-
-	}
-
-	err := db.Create(&progresses).Error
-	if err != nil {
-		log.Println(constant.ErrSeedingDatabase)
-	}
+    if err := db.Create(&progresses).Error; err != nil {
+        log.Println(constant.ErrSeedingDatabase)
+    }
 
 }

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/bxcodec/faker/v3"
+	faker2 "github.com/jaswdr/faker"
 	"gorm.io/gorm"
 )
 
@@ -28,6 +29,8 @@ func SeedUsers(db *gorm.DB) {
 	}
 
 	users := []model.User{}
+
+	f := faker2.New()
 
 	for i := 0; i < 6; i++ {
 
@@ -51,7 +54,7 @@ func SeedUsers(db *gorm.DB) {
 			Name:        faker.Name(),
 			Email:       faker.Email(),
 			Password:    hashPassword,
-			PhoneNumber: faker.Phonenumber(),
+			PhoneNumber: f.Numerify("+62-8##-####-####"),
 			DateOfBirth: date,
 			RoleID:      &roleID,
 			GenderID:    utils.PointNumber(rand.IntN(2) + 1),
