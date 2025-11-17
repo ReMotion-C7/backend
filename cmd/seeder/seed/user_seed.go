@@ -32,7 +32,7 @@ func SeedUsers(db *gorm.DB) {
 
 	f := faker2.New()
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 50; i++ {
 
 		hashPassword, err := utils.HashPassword("password123")
 		if err != nil {
