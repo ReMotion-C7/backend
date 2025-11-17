@@ -20,6 +20,10 @@ func AddPatient(dto request.AddPatientDto, id int) error {
 		return err
 	}
 
+	if len(dto.Symptoms) == 0 {
+		return fmt.Errorf(constant.ErrAllInputMustBeFilled)
+	}
+
 	patient := model.Patient{
 		UserID:           uint(dto.UserId),
 		TherapyStartDate: therapyStartDate,
