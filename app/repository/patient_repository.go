@@ -20,10 +20,6 @@ func AddPatient(dto request.AddPatientDto, id int) error {
 		return err
 	}
 
-	if len(dto.Symptoms) == 0 {
-		return fmt.Errorf(constant.ErrAllInputMustBeFilled)
-	}
-
 	patient := model.Patient{
 		UserID:           uint(dto.UserId),
 		TherapyStartDate: therapyStartDate,
@@ -92,7 +88,10 @@ func EditPatient(dto request.EditPatientDto, fisioId int, patientId int) error {
 		return fmt.Errorf(constant.ErrPatientNotFound)
 	}
 
-	err = database.Model(&patient).Update("phase", dto.Phase).Error
+	err = database.Model(&patient).Updates(map[string]interface{}{
+		"phase_id":   dto.PhaseId,
+		"diagnostic": dto.Diagnostic,
+	}).Error
 	if err != nil {
 		return err
 	}
@@ -164,7 +163,7 @@ func RetrievePatientProgresses(patientId int) ([]response.ProgressDto, error) {
 
 	for _, p := range progresses {
 		dto = append(dto, response.ProgressDto{
-			Id: int(p.ID),
+			Id:   int(p.ID),
 			Date: p.Date.Format("2006-01-02"),
 		})
 	}
