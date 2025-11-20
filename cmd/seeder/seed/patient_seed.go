@@ -3,9 +3,7 @@ package seed
 import (
 	"ReMotion-C7/app/model"
 	"ReMotion-C7/constant"
-	"ReMotion-C7/utils"
 	"log"
-	"math/rand/v2"
 	"time"
 
 	"github.com/bxcodec/faker/v3"
@@ -38,9 +36,17 @@ func SeedPatients(db *gorm.DB) {
 			fisioId = 2
 		}
 
+		var phaseId uint
+
+		if i <= 1 {
+			phaseId = 3
+		} else {
+			phaseId = 2
+		}
+
 		patient := model.Patient{
 			Diagnostic:       faker.Paragraph(),
-			PhaseID:          utils.PointNumber(rand.IntN(6) + 1),
+			PhaseID:          &phaseId,
 			TherapyStartDate: date,
 			UserID:           uint(i + 3),
 			FisiotherapyID:   fisioId,

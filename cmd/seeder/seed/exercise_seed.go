@@ -39,6 +39,24 @@ func SeedExercises(db *gorm.DB) {
 			TypeID:      utils.PointNumber(2),
 			CategoryID:  utils.PointNumber(1),
 		},
+		{
+			Name:        "Bridging",
+			Description: "Latihan penguatan dengan mengangkat pinggul dari posisi telentang untuk melatih gluteus dan punggung bawah.",
+			Muscle:      "Otot Pantat",
+			Image:       "https://uajktgblgndryqoprbdd.supabase.co/storage/v1/object/public/ReMotion/Bridging%20Image.png",
+			Video:       "https://uajktgblgndryqoprbdd.supabase.co/storage/v1/object/public/ReMotion/Bridging%20Landscape.mp4",
+			TypeID:      utils.PointNumber(2),
+			CategoryID:  utils.PointNumber(2),
+		},
+		{
+			Name:        "Leg Extension",
+			Description: "Latihan penguatan kaki dengan meluruskan lutut menggunakan theraband untuk melatih otot paha depan.",
+			Muscle:      "Otot Paha Depan",
+			Image:       "https://uajktgblgndryqoprbdd.supabase.co/storage/v1/object/public/ReMotion/Bridging%20Image.png",
+			Video:       "https://uajktgblgndryqoprbdd.supabase.co/storage/v1/object/public/ReMotion/Bridging%20Landscape.mp4",
+			TypeID:      utils.PointNumber(2),
+			CategoryID:  utils.PointNumber(2),
+		},
 	}
 
 	err := db.Create(&exercises).Error

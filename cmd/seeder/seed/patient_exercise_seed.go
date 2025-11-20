@@ -29,17 +29,37 @@ func SeedPatientExercises(db *gorm.DB) {
 
 	for _, patient := range patients {
 
-		for _, e := range exercises {
+		if patient.ID == 1 || patient.ID == 2 {
 
-			patientExercise := model.PatientExercise{
-				MethodID:   utils.PointNumber(rand.IntN(2) + 1),
-				Set:        (rand.IntN(3) + 1),
-				RepOrTime:  (rand.IntN(3) + 1) * 10,
-				PatientID:  patient.ID,
-				ExerciseID: e.ID,
+			for i := 0; i < 3; i++ {
+
+				patientExercise := model.PatientExercise{
+					MethodID:   utils.PointNumber(rand.IntN(2) + 1),
+					Set:        (rand.IntN(3) + 1),
+					RepOrTime:  (rand.IntN(3) + 1) * 10,
+					PatientID:  patient.ID,
+					ExerciseID: uint(i + 1),
+				}
+
+				patientExercises = append(patientExercises, patientExercise)
+
 			}
 
-			patientExercises = append(patientExercises, patientExercise)
+		} else if patient.ID == 3 || patient.ID == 4 {
+
+			for i := 0; i < 2; i++ {
+
+				patientExercise := model.PatientExercise{
+					MethodID:   utils.PointNumber(rand.IntN(2) + 1),
+					Set:        (rand.IntN(3) + 1),
+					RepOrTime:  (rand.IntN(3) + 1) * 10,
+					PatientID:  patient.ID,
+					ExerciseID: uint(i + 4),
+				}
+
+				patientExercises = append(patientExercises, patientExercise)
+
+			}
 
 		}
 
