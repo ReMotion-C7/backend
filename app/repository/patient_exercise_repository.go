@@ -138,6 +138,7 @@ func EditPatientExercise(dto request.EditPatientExerciseDto, patientId int, exer
 
 	err := database.Model(&patientExercise).
 		Updates(map[string]interface{}{
+			"method_id":   dto.MethodId,
 			"set":         dto.Set,
 			"rep_or_time": dto.RepOrTime,
 		}).Error

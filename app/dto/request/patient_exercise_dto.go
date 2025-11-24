@@ -8,6 +8,7 @@ type AssignExerciseToPatientDto struct {
 }
 
 type EditPatientExerciseDto struct {
+	MethodId  int `json:"methodId" validate:"required"`
 	Set       int `json:"set" validate:"required"`
 	RepOrTime int `json:"repOrTime" validate:"required"`
 }
